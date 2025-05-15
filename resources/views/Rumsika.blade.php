@@ -7,7 +7,7 @@
            padding: 0;
            height: 100%;
            background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), 
-                       url('{{ asset('images/exterior-design-shutterstock_193966368-100x700-compressed.jpg') }}') 
+                       url('{{ asset('public\images\exterior-design-shutterstock_1932966368-1200x700-compressed.jpg') }}') 
                        no-repeat center center fixed;
            background-size: cover;
            background-color: black;
@@ -33,7 +33,7 @@
            left: %;
            transform: translate(0, -50%);
        }
-  </style>
+    </style>
    <div class="container  text-white ">
     <div class="main  align-middle align-items-center text-center  mt-10 ml-3">
       <div class="col-6 w-100 mt-5">
