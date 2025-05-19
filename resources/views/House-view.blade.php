@@ -1,22 +1,20 @@
 @extends('layouts.app')
-@section('title', 'Tenant-buyer')
+@section('title', 'House View')
 @section('content')
 @include('mainnav')
 <style>
-  
-    
-    .filters {
-     margin-top: 35px;    /* Reduced from 50PX */
-    margin-bottom: 10px;
-    margin-left: 4%;
+    .row-1 {
+        align-items: center;
+        justify-content: center;
+        display: flex;
     }
-    .filters ul {
-    display: flex;
-    gap: 1rem; /* space between filter items */
-    padding: 0;
-    align-items: center;
+    .row-1 img {
+        width: 100%;
+        max-width: 600px;
+        height: auto;
+        border-radius: 4px;
+       
     }
-    
     .card{
         width: 23%;
         height: auto;
@@ -24,7 +22,7 @@
         margin-right: 1%;
         margin-top: 2%;
     }
-    .row{
+    .row-2{
         margin-left: 2%;
         width: 100%;
         top: -10;
@@ -33,44 +31,41 @@
     .card img{
         width: 100%;
     }
-    ul{
-        list-style: none;
-
-    }
-  
 </style>
+ <div class="row row-1  mt-5">
+    <div class="col-md-5 d-flex justify-content-center ">
+        <img src="{{ asset('images/exterior-design-shutterstock_1932966368-1200x700-compressed.jpg') }}" alt="" srcset="">
+    </div>
 
+    <div class="col-md-5  ">
+        <h1>House Name</h1>
+        <div class="row">
+            <div class="col"><p><b>Posted by:</b></p></div>
+            <div class="col"><p><b>Tel:</b></p></div>
 
-<div class="filters ">
-    <ul>
-        <li><span class="bi bi-funnel-fill" style="font-size: 1.5rem; margin-right: 10px;color:green;"></span>
-        </li>
-        <li>
-            <label for="">Location</label>
-            <select class="custom-select" id="inputGroupSelect02">
-            <option selected>---Location---</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-            </select>
-        </li>
-        
-         <li>
-            <label for="">Type</label>
-            <select class="custom-select" id="inputGroupSelect02">
-            <option selected>---Type---</option>
-            <option value="1">One-Bedroom</option>
-            <option value="2">Single</option>
-            <option value="3">Bedsitter</option>
-            <option value="4">Shop-space</option>
-            <option value="5">Two Bedroom</option>
-            </select>
-        </li>
-    </ul>
-</div>
+        </div>
+        <p>House Description</p>
+        <p>Price: $XXX,XXX</p>
+        <p>Location: City, State</p>
+        <p>Type: Bungalow</p>
+        <button class="btn btn-primary">Contact Seller</button>
+        <div class="row row-3">
+            <div class="col">
+                <img src="" alt="outside">
+            </div>
+            <div class="col">
+                <img src="" alt="inside">
+            </div>
+            <div class="col">
+                <img src="" alt="amenities">
+            </div>
+        </div>
+    </div>
+ </div>
+ <br><br>
+ <h3 style="margin-left: 5%; margin-bottom:0;"><i class="bi bi-filter-right"></i> Other Available spaces</h3>
+<div class="row row-2 col-lg-6 col-md-6 col-xs-3 ">
 
-<div class="row col-lg-6 col-md-6 col-xs-3 ">
-    <h3>Available Spaces</h3>
         <div class="card ">
                 <img src="{{ asset('images/exterior-design-shutterstock_1932966368-1200x700-compressed.jpg') }}" alt="house" srcset="">
                 <p>Bungalow at Nyeri</p>
@@ -92,7 +87,4 @@
                 <a href="http://" class="btn btn-warning">Details</a>
         </div> 
 </div>
-<script>
-    
-</script>
 @endsection

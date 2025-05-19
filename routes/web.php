@@ -19,3 +19,6 @@ Route::get('/', function () {
 Route::get('/Tenant', function(){
     return view('Tenant-buyer');
 });
+Route::get('/House-view', function(){
+    return view('House-view');
+});
