@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Tenant-buyer')
 @section('content')
+<!-- include the nav file -->
 @include('mainnav')
 <style>
   
@@ -70,7 +71,7 @@
 </div>
 
 <div class="row col-lg-6 col-md-6 col-xs-3 ">
-    <h3>Available Spaces</h3>
+    <h3><i class="bi bi-filter-right"></i>Available Spaces</h3>
         <div class="card ">
                 <img src="{{ asset('images/exterior-design-shutterstock_1932966368-1200x700-compressed.jpg') }}" alt="house" srcset="">
                 <p>Bungalow at Nyeri</p>
@@ -92,6 +93,8 @@
                 <a href="http://" class="btn btn-warning">Details</a>
         </div> 
 </div>
+<br><br>
+@include('mainfooter')
 <script>
     
 </script>

@@ -98,9 +98,10 @@
             <a class="btn btn-warning " href="{{ url('Tenant') }}">Tenant</a>
           </div>
           <div class="col-2  mb-2  ">
-            <button class="btn btn-warning">Landlord</button>
+            <a class="btn btn-warning " href="{{ url('Landlord-login') }}">Tenant</a>
           </div>
         </div>
      </div>
     </div>
+    @include('mainfooter')
 @endsection

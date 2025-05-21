@@ -22,3 +22,6 @@ Route::get('/Tenant', function(){
 Route::get('/House-view', function(){
     return view('House-view');
 });
+Route::get('/Landlord-login', function(){
+    return view('Landlord-login');
+});

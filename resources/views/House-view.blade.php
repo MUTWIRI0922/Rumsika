@@ -42,7 +42,6 @@
         <div class="row">
             <div class="col"><p><b>Posted by:</b></p></div>
             <div class="col"><p><b>Tel:</b></p></div>
-
         </div>
         <p>House Description</p>
         <p>Price: $XXX,XXX</p>
@@ -87,4 +86,6 @@
                 <a href="http://" class="btn btn-warning">Details</a>
         </div> 
 </div>
+<br><br>
+@include('mainfooter')
 @endsection
