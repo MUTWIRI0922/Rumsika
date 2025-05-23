@@ -98,7 +98,7 @@
             <a class="btn btn-warning " href="{{ url('Tenant') }}">Tenant</a>
           </div>
           <div class="col-2  mb-2  ">
-            <a class="btn btn-warning " href="{{ url('Landlord-login') }}">Tenant</a>
+            <a class="btn btn-warning " href="{{ url('Landlord-login') }}">Landlord</a>
           </div>
         </div>
      </div>

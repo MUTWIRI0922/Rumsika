@@ -19,20 +19,21 @@
     }
     
     .card{
-        width: 23%;
+        width: 100%;
         height: auto;
         border-radius: 4px;
-        margin-right: 1%;
-        margin-top: 2%;
+      
     }
     .row{
-        margin-left: 2%;
-        width: 100%;
-        top: -10;
+        margin-left: 1%;
+        margin-right: 1%;
         
     }
     .card img{
         width: 100%;
+        height: 200px;
+        object-fit: cover;       /* Ensures the image covers the area and is not distorted */
+        border-radius: 4px;
     }
     ul{
         list-style: none;
@@ -70,29 +71,37 @@
     </ul>
 </div>
 
-<div class="row col-lg-6 col-md-6 col-xs-3 ">
+<div class="row">
     <h3><i class="bi bi-filter-right"></i>Available Spaces</h3>
+     <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
         <div class="card ">
                 <img src="{{ asset('images/exterior-design-shutterstock_1932966368-1200x700-compressed.jpg') }}" alt="house" srcset="">
                 <p>Bungalow at Nyeri</p>
                 <a href="{{ url('House-view') }}" class="btn btn-warning">Details</a>
         </div>
-        <div class="card  ">
+     </div>
+     <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <div class="card ">
                 <img src="{{ asset('images/exterior-design-shutterstock_1932966368-1200x700-compressed.jpg') }}" alt="house" srcset="">
                 <p>Bungalow at Nyeri</p>
                 <a href="{{ url('House-view') }}" class="btn btn-warning">Details</a>
-        </div> 
-        <div class="card  ">
+        </div>
+     </div>
+     <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <div class="card ">
                 <img src="{{ asset('images/exterior-design-shutterstock_1932966368-1200x700-compressed.jpg') }}" alt="house" srcset="">
                 <p>Bungalow at Nyeri</p>
-                <a href="http://" class="btn btn-warning">Details</a>
-        </div> 
-        <div class="card  ">
+                <a href="{{ url('House-view') }}" class="btn btn-warning">Details</a>
+        </div>
+     </div>
+     <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <div class="card ">
                 <img src="{{ asset('images/exterior-design-shutterstock_1932966368-1200x700-compressed.jpg') }}" alt="house" srcset="">
                 <p>Bungalow at Nyeri</p>
-                <a href="http://" class="btn btn-warning">Details</a>
-        </div> 
-</div>
+                <a href="{{ url('House-view') }}" class="btn btn-warning">Details</a>
+        </div>
+     </div>    
+</div>      
 <br><br>
 @include('mainfooter')
 <script>
