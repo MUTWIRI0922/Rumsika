@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\housedetailscontroller;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,9 +20,10 @@ Route::get('/', function () {
 Route::get('/Tenant', function(){
     return view('Tenant-buyer');
 });
-Route::get('/House-view', function(){
-    return view('House-view');
-});
+/* Route::get('/House-view', function(){
+    return view('House-view'); 
+});*/
 Route::get('/Landlord-login', function(){
     return view('Landlord-login');
 });
+Route::get('/House-view', [housedetailscontroller::class, 'findHouse']);

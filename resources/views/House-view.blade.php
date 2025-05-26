@@ -64,7 +64,24 @@
  <br><br>
  <h3 style="margin-left: 5%; margin-bottom:0;"><i class="bi bi-filter-right"></i> Other Available spaces</h3>
 <div class="row row-2 col-lg-6 col-md-6 col-xs-3 ">
-
+         @forelse($houses as $house)
+            
+                <div class="card">
+                    <img src="{{ asset('images/' . $house->image) }}" class="card-img-top" alt="House Image">
+                    <div class="card-body">
+                        <h5 class="card-title">Type: {{ $house->Type ?? 'N/A' }}</h5>
+                        <p class="card-text">
+                            Location: {{ $house->Location ?? 'N/A' }}<br>
+                            {{ $house->Description ?? 'No Title' }}
+                            Price: {{ $house->Rate ?? 'N/A' }}
+                        </p>
+                        <a href="#" class="btn btn-warning">Details</a>
+                    </div>
+                </div>
+            
+          @empty
+            <p>No houses found.</p>
+        @endforelse
         <div class="card ">
                 <img src="{{ asset('images/exterior-design-shutterstock_1932966368-1200x700-compressed.jpg') }}" alt="house" srcset="">
                 <p>Bungalow at Nyeri</p>
@@ -86,6 +103,7 @@
                 <a href="http://" class="btn btn-warning">Details</a>
         </div> 
 </div>
+     
 <br><br>
 @include('mainfooter')
 @endsection
