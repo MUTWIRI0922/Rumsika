@@ -14,7 +14,6 @@ return new class extends Migration
         //
         Schema::create('Housedetails', function (Blueprint $table) {
             $table->id();
-            
             $table->string('Type');
             $table->string('Location', 64);
             $table->text('Description');

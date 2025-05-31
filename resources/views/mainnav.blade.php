@@ -2,9 +2,10 @@
 
 <style>
     .navbar{
-        box-shadow: 3px 3px 5px grey;
+        box-shadow: 1px 1px 6px grey;
         width: 100%;
         position: fixed;
+        
     }
     .navbar img{
         width: 60vw !important;
