@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\housedetailscontroller;
+use App\Http\Controllers\RegistrationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,9 +27,20 @@ Route::get('/Tenant', [housedetailscontroller::class, 'filterHouse']);
 Route::get('/Landlord-login', function(){
     return view('Landlord-login');
 });
+Route::post('/Landlord-login', [RegistrationController::class, 'login'])->name('landlord.login');
 Route::get('/House-view', function(){
     return  redirect('/Tenant-buyer')->with('error', 'Please select a house to view details.');
 });
 
-
 Route::get('/House-view/{id}', [housedetailscontroller::class, 'show']);
+// Show the registration form
+Route::get('/Landlord-register', function() {
+    return view('Landlord-register');
+})->name('landlord.register.form');
+
+// Handle the form submission
+Route::post('/Landlord-register', [RegistrationController::class, 'register'])->name('landlord.register');
+
+Route::get('/Dashboard', function () {
+    return view('Dashboard');
+})->name('dashboard');

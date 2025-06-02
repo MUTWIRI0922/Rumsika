@@ -51,10 +51,12 @@
                 <div class="col"><p><b>Tel:</b></p></div>
             </div>
             <p>Description:{{ $select_house->Description ?? 'House Description' }}</p>
-            <p>Rate: {{ $select_house->Rate ?? 'N/A' }}</p>
-            <p>Location: {{ $select_house->Location ?? 'N/A' }}</p></p>
-            <p>Type: {{ $select_house->Type ?? 'N/A' }}</p>
-            <button class="btn btn-primary">Contact Seller</button>
+            <p>Rate: <b>{{ $select_house->Rate ?? 'N/A' }}</b></p>
+            <p>Location: <b>{{ $select_house->Location ?? 'N/A' }}</b></p></p>
+            <p>Type: <b>{{ $select_house->Type ?? 'N/A' }}</b></p>
+            <a href="https://wa.me/254796635581?text=Hello,%20I%20am%20interested%20in%20your%20{{ urlencode($select_house->Type ?? 'house') }}%20at%20{{ urlencode($select_house->Location ?? '') }}"
+                class="btn btn-warning"
+                target="_blank">Contact Seller</a>
             <div class="row row-3">
                 <div class="col">
                     <img src="" alt="outside">

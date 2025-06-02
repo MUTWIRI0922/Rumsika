@@ -4,7 +4,8 @@
     .navbar{
         box-shadow: 1px 1px 6px grey;
         width: 100%;
-        position: fixed;
+        position: fixed ;
+        z-index: 1000;
         
     }
     .navbar img{
