@@ -35,7 +35,7 @@
           @media (max-width: 768px) {
               .card {
                   max-width: 80vw;
-                  max-height: 100vw;
+                  max-height: auto;
                   margin-left: auto;
                   margin-right: auto;
               }
@@ -43,7 +43,7 @@
 </style>
 
 
-  <div class="   justify-content-center  pt-5" >
+  <div class=" justify-content-center  " >
     <div class="container">
       <div class="row  align-items-center">
         <div class="col text-center ">
@@ -71,7 +71,7 @@
                 </div>
             @endif
           <!-- registration form -->
-          <div class="card h-100 " id="register" style="border-radius: 1rem; border-color:gold; border-width:3px;">
+          <div class="card" id="register" style="border-radius: 1rem; border-color:gold; border-width:3px;">
             <div class="card-body  " style="background-color: green; border-radius: 1rem;">
               <form method="POST" action="{{ route('landlord.register') }}">
                 @csrf

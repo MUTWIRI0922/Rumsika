@@ -9,4 +9,13 @@ class housedetails extends Model
 {
     use HasFactory;
     protected $table = 'housedetails';
+
+    protected $fillable = [
+        'Type',
+        'Location',
+        'Description',
+        'Rate',
+        'image',
+    ];
+    public $timestamps = false;
 }

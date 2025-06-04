@@ -44,3 +44,4 @@ Route::post('/Landlord-register', [RegistrationController::class, 'register'])->
 Route::get('/Dashboard', function () {
     return view('Dashboard');
 })->name('dashboard');
+Route::post('/house-upload', [housedetailscontroller::class, 'upload'])->name('house.upload');

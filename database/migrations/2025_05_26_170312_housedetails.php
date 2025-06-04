@@ -17,7 +17,9 @@ return new class extends Migration
             $table->string('Type');
             $table->string('Location', 64);
             $table->text('Description');
-            $table->integer('Rate')->nullable();
+            $table->integer('Rate');
+            $table->string('image');
+            // $table->timestamps();
             
         });
     }

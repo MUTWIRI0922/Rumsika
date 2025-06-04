@@ -33,8 +33,9 @@
     }
 </style>
  <div class="row row-1  mt-5">
+     @if(isset($select_house))
     <div class="col-md-5 d-flex justify-content-center ">
-        <img src="{{ asset('images/exterior-design-shutterstock_1932966368-1200x700-compressed.jpg') }}" alt="" srcset="">
+        <img src="{{ asset('storage/' . $select_house->image)}}" alt=" house image" srcset="">
     </div>
     @if(session('error'))
     <div class="alert alert-danger alert-dismissible fade show position-fixed top-0 end-0 m-4" role="alert" style="z-index: 9999; min-width: 250px;">
@@ -43,7 +44,7 @@
     </div>
     @endif
     <!-- Showing details of the selected house -->
-    @if(isset($select_house))
+   
             <div class="col-md-5  ">
             <h1>{{ $select_house->Type ?? 'House Name' }}</h1>
             <div class="row">
@@ -79,7 +80,7 @@
          @forelse($houses as $house)
             
                 <div class="card">
-                    <img src="{{ asset('images/' . $house->image) }}" class="card-img-top" alt="House Image">
+                    <img src="{{ asset('storage/' . $house->image)}}" class="card-img-top" style="max-width:200px;" alt="House Image">
                     <div class="card-body">
                         <h5 class="card-title">{{ $house->Type ?? 'N/A' }}</h5>
                         <p class="card-text align-text-center">

@@ -56,7 +56,9 @@
            
           </p>
         </div>
-          @if($errors->any())
+         
+        <div class="col-xl-5 col-md-8 col-sm-10 col-12 mx-auto ">
+           @if($errors->any())
               <div class="alert alert-danger">
                   <ul class="mb-0">
                       @foreach($errors->all() as $error)
@@ -65,7 +67,6 @@
                   </ul>
               </div>
           @endif
-        <div class="col-xl-5 col-md-8 col-sm-10 col-12 mx-auto ">
           <!-- login form -->
           <div class="card h-100 " id="login" style="border-radius: 1rem; border-color:gold; border-width:3px;">
             <div class="card-body  " style="background-color: green;border-radius: 1rem;">

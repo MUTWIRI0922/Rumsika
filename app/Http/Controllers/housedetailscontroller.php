@@ -45,4 +45,26 @@ class housedetailscontroller extends Controller
         $houses = \App\Models\housedetails::all(); // Fetch all house details from the model
         return view('Tenant-buyer', compact('houses')); // Return the view with the house details
     }
+    public function upload(Request $request)
+    {
+        $request->validate([
+            'type' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
+            'description' => 'required|string',
+            'rate' => 'required|numeric',
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        $imagePath = $request->file('image')->store('houses', 'public');
+
+        housedetails::create([
+            'Type' => $request->type,
+            'Location' => $request->location,
+            'Description' => $request->description,
+            'Rate' => $request->rate,
+            'image' => $imagePath,
+        ]);
+
+        return redirect()->back()->with('success', 'House uploaded successfully!');
+    }
 }
