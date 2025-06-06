@@ -15,6 +15,8 @@ class housedetailscontroller extends Controller
     {
             try {
         $select_house = \App\Models\housedetails::findOrFail($id);
+    //
+        $select_house = \App\Models\housedetails::with('landlord')->findOrFail($id);
         $houses = \App\Models\housedetails::all();
         return view('House-view', compact('select_house', 'houses'));
         } catch (ModelNotFoundException $e) {
@@ -63,6 +65,7 @@ class housedetailscontroller extends Controller
             'Description' => $request->description,
             'Rate' => $request->rate,
             'image' => $imagePath,
+            'landlord_id' => session('landlord_id'), // Automatically set landlord_id from session
         ]);
 
         return redirect()->back()->with('success', 'House uploaded successfully!');

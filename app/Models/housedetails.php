@@ -16,6 +16,14 @@ class housedetails extends Model
         'Description',
         'Rate',
         'image',
+        'landlord_id',
     ];
     public $timestamps = false;
+    /**
+     * Get the landlord that owns the house details.
+     */
+    public function landlord()
+    {
+        return $this->belongsTo(\App\Models\Landlord::class, 'landlord_id');
+    }
 }
