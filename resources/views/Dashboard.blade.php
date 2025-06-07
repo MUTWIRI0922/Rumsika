@@ -85,7 +85,19 @@
                 </div>
             </div>
         </div>
-
+        <div class=" col-4 col-md-4 col-lg-4">
+            <div class="card text-black bg-warning mb-3">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-question-circle fs-1 me-3"></i>
+                        <div>
+                            <p class="card-title mb-0">Enquiries</p>
+                            <h2 class="card-text">{{$enquiriesCount }}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Add more cards for other stats if needed -->
     </div>
     <!-- house upload form -->

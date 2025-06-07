@@ -61,16 +61,14 @@
             <p>Rate: <b>{{ $select_house->Rate ?? 'N/A' }}</b>/Month</p>
             <p>Location: <b>{{ $select_house->Location ?? 'N/A' }}</b></p></p>
             <p>Type: <b>{{ $select_house->Type ?? 'N/A' }}</b></p>
-            @php
-                $phone = $select_house->landlord->phone ?? '';
-                // If phone starts with 0, replace with 254
-                if (Str::startsWith($phone, '0')) {
-                    $phone = '254' . substr($phone, 1);
-                }
-            @endphp
-            <a href="https://wa.me/{{$phone}}?text=Hello {{$select_house->landlord->name}},%20I%20am%20interested%20in%20your%20{{ urlencode($select_house->Type ?? 'house') }}%20at%20{{ urlencode($select_house->Location ?? '') }}.%20Could%20you%20please%20provide%20more%20details?"
-                class="btn btn-warning"
-                target="_blank">Contact Seller</a>
+           
+            <form method="POST" action="{{ route('enquiries.store') }}" style="display:inline;">
+                @csrf
+                <input type="hidden" name="house_id" value="{{ $select_house->id }}">
+                <button type="submit" class="btn btn-warning">
+                    Contact Seller
+                </button>
+            </form>
             <div class="row row-3">
                 <div class="col">
                     <img src="" alt="outside">

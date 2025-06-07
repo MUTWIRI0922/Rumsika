@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
           Schema::table('housedetails', function (Blueprint $table) {
-        $table->unsignedBigInteger('landlord_id')->nullable()->after('id');
+        //$table->unsignedBigInteger('landlord_id')->nullable()->after('id');
          $table->foreign('landlord_id')->references('id')->on('landlords')->onDelete('cascade');
         });
         // Add the landlord_id column to the housedetails table
