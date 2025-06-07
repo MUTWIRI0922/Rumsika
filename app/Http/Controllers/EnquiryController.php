@@ -25,6 +25,7 @@ class EnquiryController extends Controller
     if (Str::startsWith($phone, '0')) {
             $phone = '254' . substr($phone, 1);
     }
-    return redirect("https://wa.me/{$phone}?text=Hello{$name},%20I%20am%20interested%20in%20your%20{$house->Type}%20at%20{$house->Location}");
+    $url = "https://wa.me/{$phone}?text=Hello{$name},%20I%20am%20interested%20in%20your%20{$house->Type}%20at%20{$house->Location}. Please%20provide%20more%20details.%20Thank%20you!";
+    return response()->json(['whatsapp_url' => $url]);
 }
 }

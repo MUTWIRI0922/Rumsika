@@ -61,11 +61,11 @@
             <p>Rate: <b>{{ $select_house->Rate ?? 'N/A' }}</b>/Month</p>
             <p>Location: <b>{{ $select_house->Location ?? 'N/A' }}</b></p></p>
             <p>Type: <b>{{ $select_house->Type ?? 'N/A' }}</b></p>
-           
-            <form method="POST" action="{{ route('enquiries.store') }}" style="display:inline;">
+
+            <form id="enquiryForm" method="POST"  action="{{ route('enquiries.store') }}" style="display:inline;">
                 @csrf
                 <input type="hidden" name="house_id" value="{{ $select_house->id }}">
-                <button type="submit" class="btn btn-warning">
+                <button type="submit" class="btn btn-warning" id="contactSellerBtn">
                     Contact Seller
                 </button>
             </form>
@@ -111,4 +111,34 @@
 
 <br><br>
 @include('mainfooter')
+    <script>
+document.getElementById('enquiryForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    let form = this;
+    let formData = new FormData(form);
+
+    // Open a blank tab immediately
+
+
+    fetch(form.action, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': form.querySelector('[name="_token"]').value,
+            'Accept': 'application/json'
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    then(data => {
+        if(data.whatsapp_url){
+            window.open(data.whatsapp_url, '_blank');
+        } else {
+            alert('Could not generate WhatsApp link.');
+        }
+    })
+    .catch(() => {
+        alert('An error occurred. Please try again.');
+    });
+});
+</script>
 @endsection
