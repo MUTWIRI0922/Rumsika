@@ -5,12 +5,13 @@
     @include('mainnav')<!-- include the nav file -->
 
 <style>
-  
-    
+
+
     .filters {
         margin-top: 50px;    /* Reduced from 50PX */
-        margin-bottom: 10px;
+        margin-bottom: 20px;
         margin-left: 4%;
+
     }
     .filters ul {
         display: flex;
@@ -18,18 +19,18 @@
         padding: 0;
         align-items: center;
     }
-    
+
     .card{
         width: 100%;
         height: auto;
         border-radius: 4px;
-      
+
     }
     .row{
         margin-left: 1%;
         margin-right: 1%;
-        
-        
+
+
     }
     .card img{
         width: 100%;
@@ -41,7 +42,7 @@
         list-style: none;
 
     }
-  
+
 </style>
 
 
@@ -58,7 +59,7 @@
                     <option value="Embu">Embu</option>
                     </select>
                 </li>
-                
+
                 <li>
                     <label for="">Type</label>
                     <select class="custom-select" id="typeFilter">
@@ -81,7 +82,7 @@
     <div class="row" >
         <h3><i class="bi bi-filter-right"></i>Available Spaces</h3>
         @forelse($houses as $house)
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+            <div class="col-6 col-lg-3 col-md-4 col-sm-6 mb-4">
                 <div class="card" data-location="{{ $house->Location }}" data-type="{{ $house->Type }}">
                     <img src="{{ asset('images/' . $house->image) }}" class="card-img-top" alt="House Image">
                     <div class="card-body">
@@ -97,11 +98,11 @@
         @empty
             <p>No houses found.</p>
         @endforelse
-        
-        
-    </div> 
 
-     
+
+    </div>
+
+
 <br><br>
 @include('mainfooter')
 

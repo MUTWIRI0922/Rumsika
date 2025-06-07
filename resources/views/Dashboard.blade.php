@@ -4,43 +4,43 @@
 
 <div class="container-fluid">
     <div class="row" style="height: 100vh;">
-        <div class="col-4 col-sm-3 col-xl-2  d-md-block bg-dark sidebar p-0 m-0" >
+        <div class="col-2 col-sm-3 col-xl-2  d-md-block bg-dark sidebar p-0 m-0" >
             <div class="sticky-top ">
                 <nav class=" navbar border-bottom border-white mb-3">
-                   
+
                             <a class="navbar-brand text-white active" href="{{ route('dashboard') }}">
-                                <a href="{{ route('dashboard') }}" class="ms-2"><img class="img-fluid " style=" width:50%; height:auto;" src="{{ asset('images/rumsika.svg') }}" alt="logo"></a> 
+                                <a href="{{ route('dashboard') }}" class="ms-2"><img class="img-fluid " style=" width:50%; height:auto;" src="{{ asset('images/rumsika.svg') }}" alt="logo"></a>
 
                             </a>
-                       
+
                 </nav>
                 <nav class="nav flex-column " style="height: 100%;">
                     <ul class="nav  flex-column">
-                       
+
                         <li class="nav-item   mb-2">
                             <a class="nav-link text-white active" href="">
-                                <i class="bi bi-house"></i><span class="d-none d-sm-inline ms-2">Dashboard</span> 
+                                <i class="bi bi-house"></i><span class="d-none d-sm-inline ms-2">Dashboard</span>
                             </a>
                         </li>
                         <li class="nav-item  mb-2">
                             <a class="nav-link text-white" href="#">
-                                <i class="bi bi-plus-circle"></i> <span class="d-none d-sm-inline ms-2">Add House</span> 
+                                <i class="bi bi-plus-circle"></i> <span class="d-none d-sm-inline ms-2">Add House</span>
                             </a>
                         </li>
                         <li class="nav-item  mb-2">
                             <a class="nav-link text-white" href="#">
-                                <i class="bi bi-list"></i> <span class="d-none d-sm-inline ms-2">My Houses</span> 
+                                <i class="bi bi-list"></i> <span class="d-none d-sm-inline ms-2">My Houses</span>
                             </a>
                         </li>
                         <li class="nav-item  mb-2">
                             <a class="nav-link text-white" href="#">
-                                <i class="bi bi-person"></i> <span class="d-none d-sm-inline ms-2">Profile</span> 
+                                <i class="bi bi-person"></i> <span class="d-none d-sm-inline ms-2">Profile</span>
                             </a>
                         </li>
                     </ul>
                 </nav>
             </div>
-            
+
         </div>
         <div class="col-10 col-sm-9 ms-sm-auto col-xl-10 px-md-4 ">
             <nav class="navbar navbar-expand-lg bg-body-tertiary ">
@@ -55,7 +55,7 @@
                             </a>
                         </li>
                     </ul>
-                    
+
                 </div>
             </nav>
                 @if(session('success'))
@@ -70,8 +70,26 @@
                         </ul>
                     </div>
                 @endif
+        <!-- stats cards -->
+    <div class="row mb-4">
+        <div class=" col-4 col-md-4 col-lg-4">
+            <div class="card text-black bg-warning mb-3">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-house-door fs-1 me-3"></i>
+                        <div>
+                            <p class="card-title mb-0">My Houses</p>
+                            <h2 class="card-text">{{ $housesCount }}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                <form method="POST" action="{{ route('house.upload') }}" enctype="multipart/form-data" class="mb-4">
+        <!-- Add more cards for other stats if needed -->
+    </div>
+    <!-- house upload form -->
+<form method="POST" action="{{ route('house.upload') }}" enctype="multipart/form-data" class="mb-4">
                     @csrf
                     <div class="mb-3">
                         <label class="form-label">House Type</label>
@@ -94,7 +112,7 @@
                         <input type="file" name="image" class="form-control" accept="image/*" required>
                     </div>
                     <button type="submit" class="btn btn-success">Upload House</button>
-                </form> 
+</form>
                 <table class="table">
             <thead>
                 <tr>

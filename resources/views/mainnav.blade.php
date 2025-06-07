@@ -26,9 +26,9 @@
             <span class="glyphicon glyphicon-search"></span>
 
             <a href="{{ url('Landlord-login') }}" class=" ms-4 me-4"  style="margin-right: 5%; text-decoration:none;">Lease/sell</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+           <!--  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
-            </button>
+            </button> -->
 
         </nav>
     </div>

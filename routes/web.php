@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\housedetailscontroller;
 use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\Dashboardcontroller;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,7 +42,6 @@ Route::get('/Landlord-register', function() {
 // Handle the form submission
 Route::post('/Landlord-register', [RegistrationController::class, 'register'])->name('landlord.register');
 
-Route::get('/Dashboard', function () {
-    return view('Dashboard');
-})->name('dashboard');
+
+Route::get('/Dashboard', [Dashboardcontroller::class, 'index'])->name('dashboard');
 Route::post('/house-upload', [housedetailscontroller::class, 'upload'])->name('house.upload');

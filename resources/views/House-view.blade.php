@@ -13,20 +13,20 @@
         max-width: 600px;
         height: auto;
         border-radius: 4px;
-       
+
     }
     .card{
-        width: 23%;
+        width: 100%;
         height: auto;
         border-radius: 4px;
-        margin-right: 1%;
+        margin-right: 0%;
         margin-top: 2%;
     }
     .row-2{
         margin-left: 2%;
         width: 100%;
         top: -10;
-        
+
     }
     .card img{
         width: 100%;
@@ -36,9 +36,9 @@
     height: 200px;         /* Adjust height as needed */
     object-fit: cover;     /* Ensures image covers area, cropping if needed */
     border-radius: 4px;
-    }   
+    }
 </style>
- <div class="row row-1  mt-5">
+ <div class="row row-1 ms-3">
      @if(isset($select_house))
     <div class="col-md-5 d-flex justify-content-center ">
         <img src="{{ asset('storage/' . $select_house->image)}}" alt=" house image" srcset="" style="width: 100%; height: 400px;">
@@ -50,7 +50,7 @@
     </div>
     @endif
     <!-- Showing details of the selected house -->
-   
+
             <div class="col-md-5  ">
             <h1>{{ $select_house->Type ?? 'House Name' }}</h1>
             <div class="row">
@@ -58,7 +58,7 @@
                 <div class="col"><p><b>Tel: {{ $select_house->landlord->phone ?? 'N/A' }}</b></p></div>
             </div>
             <p>Description:{{ $select_house->Description ?? 'House Description' }}</p>
-            <p>Rate: <b>{{ $select_house->Rate ?? 'N/A' }}</b></p>
+            <p>Rate: <b>{{ $select_house->Rate ?? 'N/A' }}</b>/Month</p>
             <p>Location: <b>{{ $select_house->Location ?? 'N/A' }}</b></p></p>
             <p>Type: <b>{{ $select_house->Type ?? 'N/A' }}</b></p>
             @php
@@ -84,32 +84,33 @@
             </div>
         </div>
     @endif
-    
+
  </div>
  <br><br>
  <h3 style="margin-left: 5%; margin-bottom:0;"><i class="bi bi-filter-right"></i> Other Available spaces</h3>
 <!-- Show available houses in a grid format -->
- <div class="row row-2 col-lg-6 col-md-6 col-xs-3 ">
+ <div class="row row-2">
          @forelse($houses as $house)
-            
-                <div class="card">
-                    <img src="{{ asset('storage/' . $house->image)}}" class="card-img-top" style="max-width:px;" alt="House Image">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $house->Type ?? 'N/A' }}</h5>
-                        <p class="card-text align-text-center">
-                            in <b>{{ $house->Location ?? 'N/A' }}</b>
-                            For <b>{{ $house->Rate ?? 'N/A' }}</b>
-                        </p>
-                        <a href="{{url('/House-view/' .$house->id )}}" class="btn btn-warning">Details</a>
-                    </div>
+            <div class="col-6 col-sm-6 col-lg-3 mb-4 d-flex">
+                <div class="card flex-fill">
+                                    <img src="{{ asset('storage/' . $house->image)}}" class="card-img-top" style="max-width:px;" alt="House Image">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ $house->Type ?? 'N/A' }}</h5>
+                                        <p class="card-text align-text-center">
+                                            in <b>{{ $house->Location ?? 'N/A' }}</b>
+                                            For <b>{{ $house->Rate ?? 'N/A' }}</b>/Month
+                                        </p>
+                                        <a href="{{url('/House-view/' .$house->id )}}" class="btn btn-warning">Details</a>
+                                    </div>
                 </div>
-            
+            </div>
+
           @empty
             <p>No houses found.</p>
         @endforelse
-        
+
 </div>
-     
+
 <br><br>
 @include('mainfooter')
 @endsection
