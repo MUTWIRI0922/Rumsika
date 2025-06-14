@@ -18,10 +18,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 card.parentElement.style.display = ""; // Show the card's column
             } else {
                 card.parentElement.style.display = "none"; // Hide the card's column
+                
             }
         });
     }
-
+ 
     if (locationSelect && typeSelect) {
         locationSelect.addEventListener('change', filterCards);
         typeSelect.addEventListener('change', filterCards);

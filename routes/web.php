@@ -5,6 +5,7 @@ use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\Dashboardcontroller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EnquiryController;
+use App\Http\Controllers\housecontroller;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -46,3 +47,4 @@ Route::post('/enquiries', [EnquiryController::class, 'store'])->name('enquiries.
 
 Route::get('/Dashboard', [Dashboardcontroller::class, 'index'])->name('dashboard');
 Route::post('/house-upload', [housedetailscontroller::class, 'upload'])->name('house.upload');
+Route::put('/houses/{id}', [\App\Http\Controllers\housecontroller::class, 'update'])->name('house.update');

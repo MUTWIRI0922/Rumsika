@@ -17,6 +17,9 @@ class housedetails extends Model
         'Rate',
         'image',
         'landlord_id',
+        'image_inside',
+        'Image_outside',
+        'Amenities',
     ];
     public $timestamps = false;
     /**

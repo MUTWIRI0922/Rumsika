@@ -103,5 +103,5 @@
         </div>
      </div>
     </div>
-    @include('mainfooter')
+    <!-- @include('mainfooter') -->
 @endsection

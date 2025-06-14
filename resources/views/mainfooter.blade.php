@@ -8,6 +8,6 @@
     }
 </style>
 <div class="footer-row  mt-5">
-    <p class="">Copyright&copy; 2025 Powered by BlessedArm tech</p>
+    <p class="">Copyright&copy; 2025.All rights reserved. Powered by BlessedArm tech</p>
     
 </div>

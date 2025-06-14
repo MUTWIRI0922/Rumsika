@@ -69,6 +69,7 @@
                     <option value="Bedsitter">Bedsitter</option>
                     <option value="Shop-space">Shop-space</option>
                     <option value="Apartment">Apartment</option>
+                    <option value="Two-Bedroom">Two-Bedroom</option>
                     </select>
                 </li>
             </ul>
@@ -83,8 +84,8 @@
         <h3><i class="bi bi-filter-right"></i>Available Spaces</h3>
         @forelse($houses as $house)
             <div class="col-6 col-lg-3 col-md-4 col-sm-6 mb-4">
-                <div class="card" data-location="{{ $house->Location }}" data-type="{{ $house->Type }}">
-                    <img src="{{ asset('images/' . $house->image) }}" class="card-img-top" alt="House Image">
+                <div class="card house-card" data-location="{{ $house->Location }}" data-type="{{ $house->Type }}">
+                    <img src="{{ asset('storage/' . $house->image) }}" class="card-img-top" alt="House Image">
                     <div class="card-body">
                         <h5 class="card-title"> {{ $house->Type ?? 'N/A' }}</h5>
                         <p class="card-text">
@@ -102,7 +103,9 @@
 
     </div>
 
-
+    <div id="noResults" style="display: none; text-align: center; margin-top: 20px;">
+        <p>No results found.</p>
+    </div> 
 <br><br>
 @include('mainfooter')
 
@@ -115,5 +118,24 @@
                 alert.classList.add('hide');
             }
         }, 2000); // 4000ms = 4 seconds
+        
+    document.getElementById('searchInput').addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        const cards = document.querySelectorAll('.house-card');
+        let anyVisible = false;
+        cards.forEach(card => {
+            const text = card.innerText.toLowerCase();
+            if (text.includes(query)) {
+                card.parentElement.style.display = '';
+                anyVisible = true;
+            } else {
+                card.parentElement.style.display = 'none';
+            }
+        });
+        // Show/hide "No results" message if you have one
+        const noResults = document.getElementById('noResults');
+        if (noResults) noResults.style.display = anyVisible ? 'none' : 'block';
+    });
+
 </script>
 @endsection

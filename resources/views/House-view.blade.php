@@ -4,23 +4,48 @@
 @include('mainnav')
 <style>
     .row-1 {
-        align-items: center;
+        align-items: stretch; /* Make columns equal height */
         justify-content: center;
         display: flex;
     }
-    .row-1 img {
-        width: 100%;
-        max-width: 600px;
-        height: auto;
-        border-radius: 4px;
-
+    .main-image-col {
+        display: flex;
+        align-items: stretch;
     }
-    .card{
+    #mainhouseimage {
         width: 100%;
-        height: auto;
+        max-height: 500px !important;
+        max-width: 600px;
+        object-fit: cover;
         border-radius: 4px;
-        margin-right: 0%;
-        margin-top: 2%;
+        /* Remove inline height if present */
+    }
+    @media (max-width: 991.98px) { /* Bootstrap lg breakpoint */
+        .row-1 {
+            flex-direction: column;
+        }
+        .main-image-col, .details-col {
+            min-height: auto !important;
+        }
+        #mainhouseimage {
+            height: 200px;
+        }
+    }
+    .details-col h1,
+    .details-col p,
+    .details-col ul,
+    .details-col form {
+        margin-top: 0.2rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .details-col ul {
+        padding-left: 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .details-col li {
+        margin-bottom: 0.2rem;
     }
     .row-2{
         margin-left: 2%;
@@ -37,31 +62,53 @@
     object-fit: cover;     /* Ensures image covers area, cropping if needed */
     border-radius: 4px;
     }
+    .row-3 img {
+    width: 60%;
+    height: 100px;      /* Set your desired height */
+    object-fit: cover;  /* Ensures images are cropped to fit */
+    border-radius: 4px;
+    margin-bottom: 10px;
+    }
+    .row-3 {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+    @media (max-width:576px){
+        #mainhouseimage {
+            width: 100%;
+            height: 300px;
+        }
+    }
+    
 </style>
- <div class="row row-1 ms-3">
+ <div class="row row-1 ms-3 mt-5">
+    <br><br>
      @if(isset($select_house))
-    <div class="col-md-5 d-flex justify-content-center ">
-        <img src="{{ asset('storage/' . $select_house->image)}}" alt=" house image" srcset="" style="width: 100%; height: 400px;">
+    <div class="col-md-5 main-image-col d-flex justify-content-center">
+        <img id="mainhouseimage" src="{{ asset('storage/' . $select_house->image)}}" alt=" house image">
     </div>
-    @if(session('error'))
-    <div class="alert alert-danger alert-dismissible fade show position-fixed top-0 end-0 m-4" role="alert" style="z-index: 9999; min-width: 250px;">
-        {{ session('error') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @endif
-    <!-- Showing details of the selected house -->
-
-            <div class="col-md-5  ">
-            <h1>{{ $select_house->Type ?? 'House Name' }}</h1>
+    <div class="col-md-5 details-col d-flex flex-column justify-content-between">
+        <!-- Showing details of the selected house -->
+              <h1>{{ $select_house->Type ?? 'House Name' }}</h1>
             <div class="row">
                 <div class="col"><p><b>Posted by: {{ $select_house->landlord->name ?? 'Unknown' }}</b></p></div>
                 <div class="col"><p><b>Tel: {{ $select_house->landlord->phone ?? 'N/A' }}</b></p></div>
             </div>
-            <p>Description:{{ $select_house->Description ?? 'House Description' }}</p>
+            @php
+                $points = preg_split('/\r\n|\r|\n/', $select_house->Description ?? '');
+            @endphp
+             <p>Description:</p>
+            <ul>
+                @foreach($points as $point)
+                    @if(trim($point) !== '')
+                        <li>{{ $point }}</li>
+                    @endif
+                @endforeach
+            </ul>
             <p>Rate: <b>{{ $select_house->Rate ?? 'N/A' }}</b>/Month</p>
             <p>Location: <b>{{ $select_house->Location ?? 'N/A' }}</b></p></p>
-            <p>Type: <b>{{ $select_house->Type ?? 'N/A' }}</b></p>
-
+            <!-- <p>Type: <b>{{ $select_house->Type ?? 'N/A' }}</b></p> -->
             <form id="enquiryForm" method="POST"  action="{{ route('enquiries.store') }}" style="display:inline;">
                 @csrf
                 <input type="hidden" name="house_id" value="{{ $select_house->id }}">
@@ -70,17 +117,23 @@
                 </button>
             </form>
             <div class="row row-3">
-                <div class="col">
-                    <img src="" alt="outside">
-                </div>
-                <div class="col">
-                    <img src="" alt="inside">
-                </div>
-                <div class="col">
-                    <img src="" alt="amenities">
-                </div>
+                @if($select_house->image_inside)
+                    <div class="col"><img src="{{ asset('storage/' . $select_house->image_inside) }}" alt="Image 1"
+                    onclick="setMainImage(this)">
+                    </div>
+                @endif
+                @if($select_house->Image_outside)
+                    <div class="col"><img src="{{ asset('storage/' . $select_house->Image_outside) }}" alt="Image 2"
+                    onclick="setMainImage(this)">
+                    </div>
+                @endif
+                @if($select_house->Amenities)
+                    <div class="col"><img src="{{ asset('storage/' . $select_house->Amenities) }}" alt="Image 3"
+                    onclick="setMainImage(this)">
+                    </div>
+                @endif
             </div>
-        </div>
+    </div>
     @endif
 
  </div>
@@ -90,7 +143,7 @@
  <div class="row row-2">
          @forelse($houses as $house)
             <div class="col-6 col-sm-6 col-lg-3 mb-4 d-flex">
-                <div class="card flex-fill">
+                <div class="card house-card flex-fill">
                                     <img src="{{ asset('storage/' . $house->image)}}" class="card-img-top" style="max-width:px;" alt="House Image">
                                     <div class="card-body">
                                         <h5 class="card-title">{{ $house->Type ?? 'N/A' }}</h5>
@@ -112,33 +165,55 @@
 <br><br>
 @include('mainfooter')
     <script>
-document.getElementById('enquiryForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    let form = this;
-    let formData = new FormData(form);
-
-    // Open a blank tab immediately
-
-
-    fetch(form.action, {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': form.querySelector('[name="_token"]').value,
-            'Accept': 'application/json'
-        },
-        body: formData
-    })
-    .then(response => response.json())
-    then(data => {
-        if(data.whatsapp_url){
-            window.open(data.whatsapp_url, '_blank');
-        } else {
-            alert('Could not generate WhatsApp link.');
+        function setMainImage(img) {
+            document.getElementById('mainhouseimage').src = img.src;
         }
-    })
-    .catch(() => {
-        alert('An error occurred. Please try again.');
+        document.getElementById('enquiryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let form = this;
+            let formData = new FormData(form);
+
+            // Open a blank tab immediately
+
+
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': form.querySelector('[name="_token"]').value,
+                    'Accept': 'application/json'
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.whatsapp_url){
+                    window.open(data.whatsapp_url, '_blank');
+                } else {
+                    alert('Could not generate WhatsApp link.');
+                }
+            })
+            .catch(() => {
+                alert('An error occurred. Please try again.');
+            });
+        });
+       
+    document.getElementById('searchInput').addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        const cards = document.querySelectorAll('.house-card');
+        let anyVisible = false;
+        cards.forEach(card => {
+            const text = card.innerText.toLowerCase();
+            if (text.includes(query)) {
+                card.parentElement.style.display = '';
+                anyVisible = true;
+            } else {
+                card.parentElement.style.display = 'none';
+            }
+        });
+        // Show/hide "No results" message if you have one
+        const noResults = document.getElementById('noResults');
+        if (noResults) noResults.style.display = anyVisible ? 'none' : 'block';
     });
-});
+
 </script>
 @endsection

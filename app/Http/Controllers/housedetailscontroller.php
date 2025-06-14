@@ -55,19 +55,29 @@ class housedetailscontroller extends Controller
             'description' => 'required|string',
             'rate' => 'required|numeric',
             'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'image_inside' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'Image_outside' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'Amenities' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
+        // house data array
+        $data = [
+        'Type' => $request->type,
+        'Location' => $request->location,
+        'Description' => $request->description,
+        'Rate' => $request->rate,
+        'landlord_id' => session('landlord_id'),
+        ];
+        // Handle image upload
+        $data['image'] = $request->file('image')->store('houses', 'public');
+            if ($request->hasFile('image_inside')) $data['image_inside'] = $request->file('image_inside')->store('houses', 'public');
+            if ($request->hasFile('Image_outside')) $data['Image_outside'] = $request->file('Image_outside')->store('houses', 'public');
+            if ($request->hasFile('Amenities')) $data['Amenities'] = $request->file('Amenities')->store('houses', 'public');
 
-        $imagePath = $request->file('image')->store('houses', 'public');
-
-        housedetails::create([
-            'Type' => $request->type,
-            'Location' => $request->location,
-            'Description' => $request->description,
-            'Rate' => $request->rate,
-            'image' => $imagePath,
-            'landlord_id' => session('landlord_id'), // Automatically set landlord_id from session
-        ]);
-
+        
+        // Create a new house record
+        housedetails::create($data);
+        
+        // Redirect back with success message
         return redirect()->back()->with('success', 'House uploaded successfully!');
     }
 }

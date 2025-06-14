@@ -12,7 +12,7 @@
            background-size: cover;
            background-color: black;
           
-       }
+          }
        body::after {
            content: "";
            position: fixed;
