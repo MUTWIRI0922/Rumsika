@@ -90,10 +90,15 @@
     </div>
     <div class="col-md-5 details-col d-flex flex-column justify-content-between">
         <!-- Showing details of the selected house -->
+
               <h1>{{ $select_house->Type ?? 'House Name' }}</h1>
+              <p>Posted: <b>{{ $select_house->created_at->diffForHumans() ?? 'N/A' }}</b></p>
+              @php
+                    $maskedPhone = substr($select_house->landlord->phone, 0, 4) . '***' . substr($select_house->landlord->phone, -3);
+              @endphp
             <div class="row">
                 <div class="col"><p><b>Posted by: {{ $select_house->landlord->name ?? 'Unknown' }}</b></p></div>
-                <div class="col"><p><b>Tel: {{ $select_house->landlord->phone ?? 'N/A' }}</b></p></div>
+                <div class="col"><p><b>Tel: {{ $maskedPhone ?? 'N/A' }}</b></p></div>
             </div>
             @php
                 $points = preg_split('/\r\n|\r|\n/', $select_house->Description ?? '');
@@ -140,7 +145,7 @@
  <br><br>
  <h3 style="margin-left: 5%; margin-bottom:0;"><i class="bi bi-filter-right"></i> Other Available spaces</h3>
 <!-- Show available houses in a grid format -->
- <div class="row row-2">
+ <div class="row row-2" id="availableSpaces">
          @forelse($houses as $house)
             <div class="col-6 col-sm-6 col-lg-3 mb-4 d-flex">
                 <div class="card house-card flex-fill">
@@ -151,7 +156,20 @@
                                             in <b>{{ $house->Location ?? 'N/A' }}</b>
                                             For <b>{{ $house->Rate ?? 'N/A' }}</b>/Month
                                         </p>
-                                        <a href="{{url('/House-view/' .$house->id )}}" class="btn btn-warning">Details</a>
+                                        <div class="row">
+                                            <div class="col">
+                                                <p>Posted: <b>{{ $house->created_at->diffForHumans(null, null, true) ?? 'N/A' }}</b></p>
+                                            </div>
+                                            <div class="col">
+                                                <i class="bi bi-eye">{{$viewsCount[$house->id] ?? 0}}</i>
+                                            </div>
+                                        </div>
+                                         <form action="{{ route('house.view.record', ['id' => $house->id]) }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            <input type="hidden" name="house_id" value="{{ $house->id }}">
+                                            <input type="hidden" name="client_ip" value="{{ request()->ip() }}">
+                                            <button type="submit" class="btn btn-warning">Details</button>
+                                         </form>
                                     </div>
                 </div>
             </div>
@@ -197,22 +215,27 @@
             });
         });
        
-    document.getElementById('searchInput').addEventListener('input', function() {
-        const query = this.value.toLowerCase();
-        const cards = document.querySelectorAll('.house-card');
-        let anyVisible = false;
-        cards.forEach(card => {
-            const text = card.innerText.toLowerCase();
-            if (text.includes(query)) {
-                card.parentElement.style.display = '';
-                anyVisible = true;
-            } else {
-                card.parentElement.style.display = 'none';
-            }
+    document.addEventListener('DOMContentLoaded', function() {
+        var searchInput = document.getElementById('searchInput');
+        if (!searchInput) return;
+
+        searchInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const availableSpaces = document.getElementById('availableSpaces');
+            const cards = availableSpaces.querySelectorAll('.house-card');
+            let anyVisible = false;
+            cards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                if (text.includes(query)) {
+                    card.parentElement.style.display = '';
+                    anyVisible = true;
+                } else {
+                    card.parentElement.style.display = 'none';
+                }
+            });
+            const noResults = document.getElementById('noResults');
+            if (noResults) noResults.style.display = anyVisible ? 'none' : 'block';
         });
-        // Show/hide "No results" message if you have one
-        const noResults = document.getElementById('noResults');
-        if (noResults) noResults.style.display = anyVisible ? 'none' : 'block';
     });
 
 </script>

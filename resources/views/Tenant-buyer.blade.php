@@ -92,7 +92,14 @@
                             in {{ $house->Location ?? 'N/A' }}
                             For {{ $house->Rate ?? 'N/A' }}/month
                         </p>
-                        <a href="{{url('House-view/'. $house->id)}}" class="btn btn-warning">Details</a>
+                        <p>Posted: <b>{{ $house->created_at->diffForHumans(null, null, true) ?? 'N/A' }}</b><i class="bi bi-eye ">{{$viewsCount[$house->id] ?? 0}}</i></p>
+                     
+                        <form action="{{ route('house.view.record', ['id' => $house->id]) }}" method="POST" style="display: inline;">
+                            @csrf
+                            <input type="hidden" name="house_id" value="{{ $house->id }}">
+                            <input type="hidden" name="client_ip" value="{{ request()->ip() }}">
+                            <button type="submit" class="btn btn-warning">Details</button>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -95,10 +95,10 @@
         <p class="mt-0">Rumsika connects you directly to your potential Landlord or tenant,<br> from wherever you are across the Kenyan territory.</p>
         <div class="row justify-content-center mt-3">
           <div class="col-2  mb-2 ">
-            <a class="btn btn-warning " href="{{ url('Tenant') }}">Tenant</a>
+            <a class="btn btn-warning " href="{{ url('Tenant-buyer') }}">Find a house</a>
           </div>
           <div class="col-2  mb-2  ">
-            <a class="btn btn-warning " href="{{ url('Landlord-login') }}">Landlord</a>
+            <a class="btn btn-warning " href="{{ url('Landlord-login') }}">Lease a house</a>
           </div>
         </div>
      </div>

@@ -7,7 +7,7 @@ use App\Models\housedetails;
 
 class housecontroller extends Controller
 {
-    //
+    //update a house in the system
     public function update(Request $request, $id)
     {
         $house = housedetails::findOrFail($id);
@@ -47,5 +47,19 @@ class housecontroller extends Controller
         $house->save();
 
         return redirect()->route('dashboard', ['section' => 'my-houses'])->with('success', 'House updated successfully!');
+    }
+    //delete a house from the system
+    public function delete($id)
+    {
+        $house = \App\Models\housedetails::findOrFail($id);
+
+        // Optional: check if the logged-in landlord owns this house
+        if ($house->landlord_id != session('landlord_id')) {
+            return back()->with('error', 'Unauthorized action.');
+        }
+
+        $house->delete();
+
+        return back()->with('success', 'House deleted successfully!');
     }
 }

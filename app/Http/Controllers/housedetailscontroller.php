@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\housedetails; // Import the housedetails model
+use App\Models\Houseviews; // Import the Houseviews model for tracking views
 use Illuminate\Database\Eloquent\ModelNotFoundException; // Import ModelNotFoundException for error handling
 
 use function Laravel\Prompts\select;
@@ -18,7 +19,12 @@ class housedetailscontroller extends Controller
     //
         $select_house = \App\Models\housedetails::with('landlord')->findOrFail($id);
         $houses = \App\Models\housedetails::all();
-        return view('House-view', compact('select_house', 'houses'));
+        // display the views for this house
+        $viewsCount = Houseviews::selectRaw('house_id, COUNT(*) as view_count')
+            ->whereIn('house_id', $houses->pluck('id')) // Filter views by the houses being displayed
+            ->groupBy('house_id')
+            ->pluck('view_count', 'house_id');
+        return view('House-view', compact('select_house', 'houses', 'viewsCount')); // Return the view with the house details
         } catch (ModelNotFoundException $e) {
         // Redirect back with an error message
         return redirect('/House-view')->with('error', 'House not found!');
@@ -35,11 +41,18 @@ class housedetailscontroller extends Controller
             return redirect('/House-view')->with('error', 'No houses found!');
         }
     }
-    public function filterHouse()
+
+    public function allHouses()
     {
         // Logic to retrieve and display house details as filtered for tenants or buyers
         $houses = \App\Models\housedetails::all(); // Fetch all house details from the model
-        return view('Tenant-buyer', compact('houses')); // Return the view with the house details
+        // Record the view for each house
+        $viewsCount = Houseviews::selectRaw('house_id, COUNT(*) as view_count')
+            ->whereIn('house_id', $houses->pluck('id')) // Filter views by the houses being displayed
+            ->groupBy('house_id')
+            ->pluck('view_count', 'house_id');
+
+        return view('Tenant-buyer', compact('houses','viewsCount')); // Return the view with the house details
     }
     public function searchHouse()
     {
@@ -78,6 +91,8 @@ class housedetailscontroller extends Controller
         housedetails::create($data);
         
         // Redirect back with success message
-        return redirect()->back()->with('success', 'House uploaded successfully!');
+        return redirect()->back()->with('success', 'House uploaded successifully!');
+
+
     }
 }

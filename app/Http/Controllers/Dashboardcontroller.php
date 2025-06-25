@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Enquiry;
+use App\Models\houseviews;
 use Carbon\Carbon;
 
 class Dashboardcontroller extends Controller
@@ -18,7 +19,10 @@ class Dashboardcontroller extends Controller
             'house_id',
             \App\Models\housedetails::where('landlord_id', $landlordId)->pluck('id')
         )->count();
-         // Example: Enquiries per month for the current year
+        $viewsCount= \App\Models\houseviews::whereIn(
+            'house_id',\App\Models\housedetails::where('landlord_id',$landlordId)->pluck('id')
+        )->count();
+         //  Enquiries per month for the current year
          $houseIds = \App\Models\housedetails::where('landlord_id', $landlordId)->pluck('id');
         $enquiriesPerMonth = Enquiry::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
             ->whereIn('house_id', $houseIds)
@@ -33,6 +37,21 @@ class Dashboardcontroller extends Controller
         for ($m = 1; $m <= 12; $m++) {
             $enquiriesData[] = $enquiriesPerMonth[$m] ?? 0;
         }
-        return view('Dashboard', compact('housesCount', 'enquiriesCount', 'landlord','houses', 'enquiriesData'));
+        //views chart data
+        $viewsPerMonth = houseviews::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
+            ->whereIn('house_id', $houseIds)
+            ->whereYear('created_at', now()->year)
+            ->groupBy('month')
+            ->orderBy('month')
+            ->pluck('count', 'month')
+            ->toArray();
+
+        // Fill missing months with 0
+        $viewsData = [];
+        for ($m = 1; $m <= 12; $m++) {
+            $viewsData[] = $viewsPerMonth[$m] ?? 0;
+        }
+        //views capture
+        return view('Dashboard', compact('housesCount', 'enquiriesCount','viewsCount', 'landlord','houses', 'enquiriesData', 'viewsData'));
     }
 }

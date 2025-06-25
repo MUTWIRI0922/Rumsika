@@ -9,6 +9,13 @@
             overflow-y: auto;
             margin: 1.75rem auto;
         }
+        .modal-dialog{
+            max-width: 60vw !important;
+            max-height: 60vh !important;
+            overflow-y: auto;
+            margin: 1.75rem auto;
+            padding: 2rem;
+        }
     }
 </style>
 <div class="container-fluid">
@@ -59,17 +66,20 @@
         <div class="col-10 col-sm-9 ms-sm-auto col-xl-10 px-md-0 ">
             <nav class="navbar navbar-expand-lg  bg-body-tertiary  ">
                 <div class="container-fluid ">
-                    <h5>Hello {{session('landlord_name')}}</h5>
-                    <ul class="navbar-nav ms-auto flex-row align-items-center">
-                        <li class="nav-item me-3">
-                            <h5><i class="bi bi-person-circle"></i> {{ session('landlord_name') ?? 'Landlord' }}</h5>
-                        </li>
-                        <li class="nav-item ms-3">
-                            <a class="navbar-brand" href="#"><i class="bi bi-arrow-bar-right me-2">Logout</i>
-                            </a>
-                        </li>
-                    </ul>
-
+                    <h5><i>Welcome back,</i> {{session('landlord_name')}}</h5>
+                    
+                    <div class="dropdown  ms-auto flex-row align-items-center">
+                            <i class="bi bi-person-circle dropdown-toggle fs-3 ms-4" type="button"  data-bs-toggle="dropdown" aria-expanded="false"></i>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item">
+                                    <a href="{{ route('dashboard', ['section' => 'profile']) }}">My Profile</a>
+                                </li>
+                                <li class="dropdown-item">
+                                        <a  href="{{ route('landlord.logout') }}"><i class="bi bi-arrow-bar-right ">Logout</i>
+                                         </a>
+                                </li>
+                            </ul>
+                    </div>
                 </div>
             </nav>
             <br>
@@ -103,18 +113,40 @@
                                 </div>
                             </div>
                         </div>
+                        <div class=" col-4 col-md-4 col-lg-3 ">
+                            <div class="card text-black bg-warning mb-3 h-100">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-eye fs-1 me-2"></i>
+                                        <div>
+                                            <p class="card-title mb-0">Views</p>
+                                            <h2 class="card-text">{{$viewsCount }}</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <!-- Add more cards for other stats if needed -->
                     </div>
-                    <div class="card mb-4 col-md-6">
-                        <div class="card-body">
-                            <h5 class="card-title">Enquiries This Year</h5>
-                            <canvas id="enquiriesChart" height="100" ></canvas>
+                    <div class="row">
+                        <div class="card mb-4 col-md-5 ms-2">
+                            <div class="card-body">
+                                <h5 class="card-title">Enquiries This Year</h5>
+                                <canvas id="enquiriesChart" height="100" ></canvas>
+                            </div>
+                        </div>
+                        <div class="card mb-4 col-md-5 ms-2">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Views This Year</h5>
+                                <canvas id="viewsChart" height="100" ></canvas>
+                            </div>
                         </div>
                     </div>
-                    <div class=" mb-4 col-md-6">
-                        <a href="{{ route('dashboard', ['section' => 'my-houses']) }}" class="btn btn-success me-3">View my Houses</a>
-                        <a href="{{ route('dashboard', ['section' => 'add-house']) }}" class="btn btn-success me-3">Post a House</a>
-                        <a href="{{ route('dashboard', ['section' => 'profile']) }}" class="btn btn-success me-3">View profile</a>
+                    
+                    <div class=" mb-4 row">
+                        <a href="{{ route('dashboard', ['section' => 'my-houses']) }}" class="btn btn-success col-3 col-lg-2 ms-3">View my Houses</a>
+                        <a href="{{ route('dashboard', ['section' => 'add-house']) }}" class="btn btn-success col-3 col-lg-2 ms-3">Post a House</a>
+                        <a href="{{ route('dashboard', ['section' => 'profile']) }}" class="btn btn-success col-3 col-lg-2 ms-3">View profile</a>
                     </div>
                 @endif
 
@@ -173,7 +205,8 @@
                 <!-- list of houses -->
                 @if(request('section')== 'my-houses')
                     <br><h3>Your Houses</h3><br><br>
-                                                 @if($errors->any())
+
+                                                @if($errors->any())
                                                     <div class="alert alert-danger">
                                                         <ul>
                                                             @foreach($errors->all() as $error)
@@ -181,6 +214,9 @@
                                                             @endforeach
                                                         </ul>
                                                     </div>
+                                                @endif
+                                                @if(session('success'))
+                                                    <div class="alert alert-success">{{ session('success') }}</div>
                                                 @endif
                     <div class="table-responsive">
                     <table class="table">
@@ -190,7 +226,9 @@
                                 <th>Type</th>
                                 <th>Location</th>
                                 <th>Description</th>
+                                <th>Time</th>
                                 <th>Rate</th>
+                                <th>Views</th>
                                 <th>Image</th>
                                 <th>Actions</th> {{-- New column for buttons --}}
                             </tr>
@@ -214,7 +252,11 @@
                                             @endforeach
                                         </ul>
                                     </td>
+                                    <td>
+                                        <p>{{ $house->created_at->diffForHumans(null, null, true) ?? 'N/A' }}</p>
+                                    </td>
                                     <td>{{ $house->Rate }}</td>
+                                    <td>{{$viewsCount[$house->id] ?? 0}}</td>
                                     <td>
                                         @if($house->image)
                                             <img src="{{ asset('storage/' . $house->image) }}" alt="House Image" width="60">
@@ -244,7 +286,7 @@
                                                     <form method="POST" action="" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="dropdown-item text-danger" onclick="return confirm('Are you sure you want to delete this house?')">
+                                                        <button type="button" class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#deleteHouseModal{{ $house->id }}">
                                                             <i class="bi bi-trash"></i> Delete
                                                         </button>
                                                     </form>
@@ -254,15 +296,7 @@
                                         <!-- Edit House Modal -->
                                          <div class="modal fade" id="editHouseModal{{ $house->id }}" tabindex="-1" aria-labelledby="editHouseModalLabel{{ $house->id }}" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-top modal-lg modal-sm-mobile">
-                                                @if($errors->any())
-                                                    <div class="alert alert-danger">
-                                                        <ul>
-                                                            @foreach($errors->all() as $error)
-                                                                <li>{{ $error }}</li>
-                                                            @endforeach
-                                                        </ul>
-                                                    </div>
-                                                @endif
+                                                
                                                 <form method="POST" action="{{ route('house.update', $house->id) }}" enctype="multipart/form-data">
                                                     @csrf
                                                     @method('PUT')
@@ -331,6 +365,28 @@
                                                 </form>
                                             </div>
                                         </div>
+                                        <!-- delete house modal -->
+                                        <div class="modal fade" id="deleteHouseModal{{ $house->id }}" tabindex="-1" aria-labelledby="deleteHouseModalLabel{{ $house->id }}" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="deleteHouseModalLabel{{ $house->id }}">Delete House</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to delete this house?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <form method="POST" action="{{ route('house.delete', $house->id) }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                                    </form>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        </div> 
                                     </td>
                                 </tr>
                             @empty
@@ -364,14 +420,14 @@
                         </div>
                       </div>
 
-                        <button type="button" class="btn btn-primary" id="editBtn">Edit</button>
+                        <button type="button" class="btn btn-primary" id="editBtn" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit Profile</button>
                         <button type="submit" class="btn btn-success d-none" id="saveBtn">Save</button>
                     </form>
                 @endif
                 <!-- Edit Profile Modal -->
                 <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
-                    <form method="POST" action="">
+                    <form method="POST" action="{{route('landlord.updateProfile', $landlord->id)}}" id="editProfileForm">
                     @csrf
                     <div class="modal-content">
                         <div class="modal-header">
@@ -443,19 +499,20 @@
     <script>
         
         document.addEventListener('DOMContentLoaded', function () {
+            // Initialize the enquiries chart
             var ctx = document.getElementById('enquiriesChart').getContext('2d');
             var enquiriesData = @json($enquiriesData);
             var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
             new Chart(ctx, {
-                type: 'line',
+                type: 'bar',
                 data: {
                     labels: months,
                     datasets: [{
                         label: 'Enquiries',
                         data: enquiriesData,
-                        borderColor: 'rgb(173, 131, 6)',
-                        backgroundColor: 'rgba(169, 129, 10, 0.2)',
+                        borderColor: 'rgb(255, 191, 0)',
+                        backgroundColor: 'rgb(255, 191,  0)',
                         fill: true,
                         tension: 0.4
                     }]
@@ -467,6 +524,32 @@
                     }
                 }
             });
+            // Initialize the views chart
+            var ctx2 = document.getElementById('viewsChart').getContext('2d');
+            var viewsData = @json($viewsData);
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            new Chart(ctx2, {
+                type: 'line',
+                data: {
+                    labels: months,
+                    datasets: [{
+                        label: 'Views',
+                        data: viewsData,
+                        borderColor: 'rgb(6, 131, 6)',
+                        backgroundColor: 'rgba(10, 169, 10, 0.2)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+
+
             document.getElementById('editBtn').onclick = function() {
                 let form = document.getElementById('profileForm');
                 form.querySelectorAll('input').forEach(input => input.removeAttribute('readonly'));

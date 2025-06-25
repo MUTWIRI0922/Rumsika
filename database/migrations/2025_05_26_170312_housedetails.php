@@ -19,7 +19,10 @@ return new class extends Migration
             $table->text('Description');
             $table->integer('Rate');
             $table->string('image');
-            // $table->timestamps();
+            $table->string('image_inside')->nullable();
+            $table->string('Image_outside')->nullable();
+            $table->text('Amenities')->nullable();
+            $table->timestamps();
             
         });
     }

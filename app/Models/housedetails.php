@@ -21,7 +21,7 @@ class housedetails extends Model
         'Image_outside',
         'Amenities',
     ];
-    public $timestamps = false;
+    public $timestamps = true;
     /**
      * Get the landlord that owns the house details.
      */

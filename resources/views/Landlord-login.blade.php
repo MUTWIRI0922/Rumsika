@@ -67,8 +67,15 @@
                   </ul>
               </div>
           @endif
+          @if(session('error'))
+              <div class="alert alert-danger">{{ session('error') }}</div>
+          @endif 
+          @if(session('success'))
+              <div class="alert alert-success">{{ session('success') }}</div>
+          @endif
           <!-- login form -->
           <div class="card h-100 " id="login" style="border-radius: 1rem; border-color:gold; border-width:3px;">
+             
             <div class="card-body  " style="background-color: green;border-radius: 1rem;">
               <form method="POST" action="{{ route('landlord.login') }}">
                 @csrf
@@ -77,7 +84,7 @@
                 <!-- Email input -->
                 <div class="mb-4">
                     <label for="Username" class="fs-4 text-white">Email</label>
-                  <input type="email" id="Email" name="email" class="form-control form-control-lg" placeholder="Enter Email" />
+                  <input type="email" id="Email" name="email" class="form-control form-control-lg" placeholder="Enter Email" autofocus />
                 </div>
 
                 <!-- Password input -->
@@ -90,7 +97,7 @@
                 </div>
 
                 <div class="d-flex justify-content-around align-items-center mb-4">
-                    <a href="#!" style="color: white;"><i>Forgot password?</i></a>
+                    <a href="{{route('otp.request')}}" style="color: white;"><i>Forgot password?</i></a>
                 </div>
                 <!-- login button -->
                 <div class="pt-1 mb-4 d-flex justify-content-center">

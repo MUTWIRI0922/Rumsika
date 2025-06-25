@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\database\QueryException;
-use Illuminate\Validation\ConnectException;
+
 use Throwable;
 
 
@@ -33,18 +33,18 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
         {
             // Catch database connection errors
-            if (
-                $exception instanceof \PDOException ||
-                $exception instanceof QueryException ||
-                (class_exists('\Illuminate\Database\ConnectException') && $exception instanceof \Illuminate\Database\ConnectException)
+            /* if (
+                 $exception instanceof \PDOException ||
+               $exception instanceof QueryException ||
+              (class_exists('\Illuminate\Database\ConnectException') && $exception instanceof \Illuminate\Database\ConnectException)
             ) {
-                // Show a custom error view or message
-                return response()->view('errors.db', [], 500);
-                // Or just return a simple message:
-                // return response('Database connection error. Please try again later.', 500);
-            }
+              // Show a custom error view or message
+               return response()->view('errors.db', [], 500);
+             // Or just return a simple message:
+              return response('Database connection error. Please try again later.', 500);
+             } */
 
-            return parent::render($request, $exception);
+         return parent::render($request, $exception);
         }
 
 }
