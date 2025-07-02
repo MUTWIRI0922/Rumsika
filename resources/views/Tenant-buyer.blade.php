@@ -92,8 +92,15 @@
                             in {{ $house->Location ?? 'N/A' }}
                             For {{ $house->Rate ?? 'N/A' }}/month
                         </p>
-                        <p>Posted: <b>{{ $house->created_at->diffForHumans(null, null, true) ?? 'N/A' }}</b><i class="bi bi-eye ">{{$viewsCount[$house->id] ?? 0}}</i></p>
-                     
+                        <div class="row">
+                                            <div class="col">
+                                                <p>Posted: <b>{{ $house->created_at->diffForHumans(null, null, true) ?? 'N/A' }}</b></p>
+                                            </div>
+                                            <div class="col">
+                                                <i class="bi bi-eye">{{$viewsCount[$house->id] ?? 0}}</i>
+                                            </div>
+                        </div>
+
                         <form action="{{ route('house.view.record', ['id' => $house->id]) }}" method="POST" style="display: inline;">
                             @csrf
                             <input type="hidden" name="house_id" value="{{ $house->id }}">
@@ -112,7 +119,7 @@
 
     <div id="noResults" style="display: none; text-align: center; margin-top: 20px;">
         <p>No results found.</p>
-    </div> 
+    </div>
 <br><br>
 @include('mainfooter')
 
@@ -125,7 +132,7 @@
                 alert.classList.add('hide');
             }
         }, 2000); // 4000ms = 4 seconds
-        
+
     document.getElementById('searchInput').addEventListener('input', function() {
         const query = this.value.toLowerCase();
         const cards = document.querySelectorAll('.house-card');

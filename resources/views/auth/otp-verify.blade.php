@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('content')
 <div class="container mt-5">
+    <img class="img-fluid" style=" width:25%; height:auto;" src="{{ asset('images/rumsika.svg') }}" alt="logo"> 
+
     <h3>Verify OTP</h3>
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>

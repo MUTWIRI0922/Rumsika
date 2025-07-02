@@ -21,11 +21,21 @@
         @yield('content')
 
     </div>
+    <!-- Loader Overlay -->
+    <div id="loader-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:2000;background:rgba(255,255,255,0.8);display:flex;align-items:center;justify-content:center;">
+        <div class="spinner-border text-success" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
     <button onclick="topFunction()" id="backToTopBtn" title="Go to top" style="display:none;position:fixed;bottom:20px;right:0px;z-index:9999;" class="btn btn-success w-10 h-10 rounded-circle shadow">
     <i class="bi bi-arrow-up"></i>
 </button>
 
     <script>
+        // Hide the loader overlay when the page is fully loaded
+        window.addEventListener('load', function() {
+        document.getElementById('loader-overlay').style.display = 'none';
+    });
         // Back to top button functionality
         window.onscroll = function() {
             const backToTopBtn = document.getElementById("backToTopBtn");

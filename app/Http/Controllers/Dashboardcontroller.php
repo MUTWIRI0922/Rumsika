@@ -19,9 +19,15 @@ class Dashboardcontroller extends Controller
             'house_id',
             \App\Models\housedetails::where('landlord_id', $landlordId)->pluck('id')
         )->count();
+        //views for all houses owned by the landlord
         $viewsCount= \App\Models\houseviews::whereIn(
             'house_id',\App\Models\housedetails::where('landlord_id',$landlordId)->pluck('id')
         )->count();
+        //views for specific houses
+        $HviewsCount = Houseviews::selectRaw('house_id, COUNT(*) as view_count')
+            ->whereIn('house_id', $houses->pluck('id')) // Filter views by the houses being displayed
+            ->groupBy('house_id')
+            ->pluck('view_count', 'house_id');   
          //  Enquiries per month for the current year
          $houseIds = \App\Models\housedetails::where('landlord_id', $landlordId)->pluck('id');
         $enquiriesPerMonth = Enquiry::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
@@ -52,6 +58,6 @@ class Dashboardcontroller extends Controller
             $viewsData[] = $viewsPerMonth[$m] ?? 0;
         }
         //views capture
-        return view('Dashboard', compact('housesCount', 'enquiriesCount','viewsCount', 'landlord','houses', 'enquiriesData', 'viewsData'));
+        return view('Dashboard', compact('housesCount', 'enquiriesCount','viewsCount','HviewsCount', 'landlord','houses', 'enquiriesData', 'viewsData'));
     }
 }

@@ -10,17 +10,29 @@
             margin: 1.75rem auto;
         }
         .modal-dialog{
-            max-width: 60vw !important;
-            max-height: 60vh !important;
+            max-width: 80vw !important;
+            max-height: 80vh !important;
             overflow-y: auto;
             margin: 1.75rem auto;
             padding: 2rem;
         }
+        .l_name{
+            font-size: 0.8rem;
+        }
+    }
+    .top-nav{
+        position: fixed;
+        width: 100%;
+        background-color: white;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+        top: 0;
+     
+        z-index: 1000;
     }
 </style>
 <div class="container-fluid">
     <div class="row" style="height: 100vh;">
-        <div class="col-1 col-sm-3 col-xl-2  d-md-block bg-success sidebar p-0 m-0" >
+        <div class="col-2 col-sm-3 col-xl-2  d-md-block bg-success sidebar p-0 m-0" >
             <div class="sticky-top ">
                 <nav class=" navbar border-bottom border-white mb-3 w-100">
 
@@ -63,29 +75,29 @@
             </div>
 
         </div>
-        <div class="col-10 col-sm-9 ms-sm-auto col-xl-10 px-md-0 ">
-            <nav class="navbar navbar-expand-lg  bg-body-tertiary  ">
-                <div class="container-fluid ">
-                    <h5><i>Welcome back,</i> {{session('landlord_name')}}</h5>
-                    
-                    <div class="dropdown  ms-auto flex-row align-items-center">
-                            <i class="bi bi-person-circle dropdown-toggle fs-3 ms-4" type="button"  data-bs-toggle="dropdown" aria-expanded="false"></i>
-                            <ul class="dropdown-menu">
-                                <li class="dropdown-item">
-                                    <a href="{{ route('dashboard', ['section' => 'profile']) }}">My Profile</a>
+        <div class="col-9 col-sm-9  col-xl-10 px-md-0 ">
+            <nav class="navbar top-nav navbar-expand-lg  bg-body-tertiary  ">
+                <div class="container-fluid d-flex align-items-center text-success row">
+                    <h5 class="l_name col"><i>Welcome back,</i> {{session('landlord_name')}}</h5>
+
+                    <div class="dropdown col " style="padding-left: 34%;">
+                            <span class=" dropdown-toggle fs-5 " id="landlordDropdown" type="button"  data-bs-toggle="dropdown" aria-expanded="false">{{session('landlord_name')}}</span>
+                            <ul class="dropdown-menu " aria-labelledby="landlordDropdown">
+                                <li class="dropdown-item ">
+                                    <a class="bi bi-person-circle nav-link" href="{{ route('dashboard', ['section' => 'profile']) }}"> My Profile</a>
                                 </li>
                                 <li class="dropdown-item">
-                                        <a  href="{{ route('landlord.logout') }}"><i class="bi bi-arrow-bar-right ">Logout</i>
-                                         </a>
+                                        <a  href="{{ route('landlord.logout') }}" class="bi bi-arrow-bar-right nav-link"> Logout</a>
                                 </li>
                             </ul>
                     </div>
                 </div>
             </nav>
             <br>
-            <div class="px-md-4">
+            <div class="px-md-4 px-lg-5 py-3 main-content">
                 <!-- stats cards -->
                 @if(request('section', 'dashboard')== 'dashboard')
+                <br><br>
                     <div class="row mb-4">
                         <div class=" col-4 col-md-4 col-lg-3">
                             <div class="card text-black bg-warning mb-3 h-100">
@@ -142,7 +154,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class=" mb-4 row">
                         <a href="{{ route('dashboard', ['section' => 'my-houses']) }}" class="btn btn-success col-3 col-lg-2 ms-3">View my Houses</a>
                         <a href="{{ route('dashboard', ['section' => 'add-house']) }}" class="btn btn-success col-3 col-lg-2 ms-3">Post a House</a>
@@ -243,7 +255,7 @@
                                         @php
                                             $points = preg_split('/\r\n|\r|\n/', $house->Description ?? '');
                                         @endphp
-                                        
+
                                         <ul>
                                             @foreach($points as $point)
                                                 @if(trim($point) !== '')
@@ -256,7 +268,7 @@
                                         <p>{{ $house->created_at->diffForHumans(null, null, true) ?? 'N/A' }}</p>
                                     </td>
                                     <td>{{ $house->Rate }}</td>
-                                    <td>{{$viewsCount[$house->id] ?? 0}}</td>
+                                    <td>{{$HviewsCount[$house->id] ?? 0}}</td>
                                     <td>
                                         @if($house->image)
                                             <img src="{{ asset('storage/' . $house->image) }}" alt="House Image" width="60">
@@ -296,7 +308,7 @@
                                         <!-- Edit House Modal -->
                                          <div class="modal fade" id="editHouseModal{{ $house->id }}" tabindex="-1" aria-labelledby="editHouseModalLabel{{ $house->id }}" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-top modal-lg modal-sm-mobile">
-                                                
+
                                                 <form method="POST" action="{{ route('house.update', $house->id) }}" enctype="multipart/form-data">
                                                     @csrf
                                                     @method('PUT')
@@ -354,7 +366,7 @@
 
 
                                                             </div>
-                                                            
+
 
                                                         </div>
                                                         <div class="modal-footer">
@@ -386,7 +398,7 @@
                                                 </div>
                                                 </div>
                                             </div>
-                                        </div> 
+                                        </div>
                                     </td>
                                 </tr>
                             @empty
@@ -397,7 +409,7 @@
                         </tbody>
                     </table>
                     </div>
-                    
+
                 @endif
                 <!-- Profile section -->
                 @if(request('section')== 'profile')
@@ -497,7 +509,7 @@
 </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        
+
         document.addEventListener('DOMContentLoaded', function () {
             // Initialize the enquiries chart
             var ctx = document.getElementById('enquiriesChart').getContext('2d');
