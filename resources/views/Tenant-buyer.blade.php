@@ -38,11 +38,49 @@
         object-fit: cover;       /* Ensures the image covers the area and is not distorted */
         border-radius: 4px;
     }
+    .card.house-card .btn {
+    width: 100%;
+    font-size: 0.8rem;
+    padding: 0.3rem 0;
+    }
     ul{
         list-style: none;
 
     }
-
+    @media (max-width: 576px) {
+    .card.house-card {
+        /* min-height: 220px;
+        max-height: 220px; */
+        display: flex;
+        flex-direction: column;
+        justify-content: stretch;
+    }
+    .card.house-card .card-img-top {
+        height: 100px;
+        object-fit: cover;
+    }
+    .card.house-card .card-body {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 0.6rem;
+        min-height: 80px;
+    }
+    .card.house-card .card-title {
+        font-size: 0.7rem;
+    }
+    .card.house-card .card-text {
+        font-size: 0.6rem;
+    }
+    .card.house-card .btn {
+        width: 100%;
+        margin-top: auto;
+    }
+    .filters label{
+        display: none; /* Hide labels on small screens */
+    }
+}
 </style>
 
 

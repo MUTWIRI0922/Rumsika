@@ -63,10 +63,10 @@
           
            
            body::after {
-               width: 80vw;
-               height: 80vw;
-               max-width: 250px;
-               max-height: 250px;
+               width: 100vw;
+               height: 100vw;
+               max-width: 450px;
+               max-height: 450px;
            }
           }
        @media (max-width: 480px) {
@@ -82,8 +82,8 @@
            body::after {
                width: 100vw;
                height: 100vw;
-               max-width: 180px;
-               max-height: 180px;
+               max-width: 250px;
+               max-height: 250px;
            }
        }
     </style>
@@ -93,11 +93,11 @@
         <img class="img-fluid" style=" width:25%; height:auto;" src="{{ asset('images/rumsika.svg') }}" alt="logo"> 
         <p class="mt-1  fw-bold">A Landlord-tenant connection Platform.</p>
         <p class="mt-0">Rumsika connects you directly to your potential Landlord or tenant,<br> from wherever you are across the Kenyan territory.</p>
-        <div class="row justify-content-center mt-3">
-          <div class="col-2  mb-2 ">
+        <div class=" justify-content-center mt-3">
+          <div class="mb-2 ">
             <a class="btn btn-warning " href="{{ url('Tenant-buyer') }}">Find a house</a>
           </div>
-          <div class="col-2  mb-2  ">
+          <div class=" mb-2  ">
             <a class="btn btn-warning " href="{{ url('Landlord-login') }}">Lease a house</a>
           </div>
         </div>

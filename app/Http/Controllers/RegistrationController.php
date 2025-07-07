@@ -16,7 +16,14 @@ class RegistrationController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:landlords,email',
             'phone' => 'required',
-            'password' => 'required|confirmed|min:6',
+            'password' => [
+                'required',
+                'confirmed',
+                'min:8',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/'
+            ],
+        ], [
+            'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.'
         ]);
 
         Landlord::create([
@@ -100,7 +107,14 @@ class RegistrationController extends Controller
         {
             $request->validate([
                 'email' => 'required|email',
-                'password' => 'required|confirmed|min:6',
+                'password' => [
+                'required',
+                'confirmed',
+                'min:8',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/'
+            ],
+            ], [
+                'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.'
             ]);
 
             // Only allow the email that received the OTP
@@ -126,22 +140,43 @@ class RegistrationController extends Controller
     {
         $landlord = Landlord::findOrFail(session('landlord_id'));
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:landlords,email,' . $landlord->id,
-            'phone' => 'required',
-        ]);
+        
+        $data = $request->only(['name', 'email', 'phone']);
 
-        $landlord->name = $request->name;
-        $landlord->email = $request->email;
-        $landlord->phone = $request->phone;
-
-        if ($request->filled('password')) {
-            $landlord->password = bcrypt($request->password);
+        if ($request->hasFile('profile_picture')) {
+            $file = $request->file('profile_picture');
+            $path = $file->store('profile_pictures', 'public');
+            $data['profile_picture'] = $path;
         }
 
+        $landlord->update($data);
+
+        return redirect()->route('dashboard', ['section' => 'profile'])->with('success', 'Profile updated successfully!');
+    }
+    // change password function
+    public function changePassword(Request $request)
+    {
+            $request->validate([
+                'current' => 'required',
+                'new' => [
+                    'required',
+                    'min:8',
+                    'confirmed',
+                    'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/'
+                ],
+            ], [
+                'new.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.'
+            ]);
+
+        $landlord = Landlord::findOrFail(session('landlord_id'));
+
+        if (!Hash::check($request->current, $landlord->password)) {
+            return back()->withErrors(['current' => 'Current password is incorrect.']);
+        }
+
+        $landlord->password = bcrypt($request->new);
         $landlord->save();
 
-        return redirect()->back()->with('success', 'Profile updated successfully!');
+        return back()->with('success', 'Password changed successfully!');
     }
-}   
+}

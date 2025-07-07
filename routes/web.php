@@ -45,6 +45,7 @@ Route::get('/Landlord-register', function() {
 
 Route::post('/Landlord-register', [RegistrationController::class, 'register'])->name('landlord.register');
 Route::post('updateProfile', [RegistrationController::class, 'updateProfile'])->name('landlord.updateProfile');
+Route::post('/landlord/change-password', [RegistrationController::class, 'changePassword'])->name('landlord.changePassword');
 Route::post('/otp/send', [RegistrationController::class, 'sendOtp'])->name('otp.send');
 Route::post('/otp/verify', [RegistrationController::class, 'verifyOtp'])->name('otp.verify');
 Route::get('/otp/request', function() { return view('auth.otp-request'); })->name('otp.request');

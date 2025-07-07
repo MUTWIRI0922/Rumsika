@@ -1,10 +1,22 @@
 @extends('layouts.app')
 @section('content')
+<style>
+    .otp-logo {
+        width: 25%;
+        height: auto;
+        display: block;
+        margin: 0 auto 1.5rem auto;
+        min-width: 120px;
+        max-width: 180px;
+    }
+</style>
 <div class="container mt-5">
+    <img class="img-fluid otp-logo" src="{{ asset('images/rumsika.svg') }}" alt="logo">
     <h3>Reset Password</h3>
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
+    
     <form method="POST" action="{{ route('password.reset') }}">
         @csrf
         <div class="mb-3">

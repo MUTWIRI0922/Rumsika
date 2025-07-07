@@ -19,16 +19,40 @@
         .l_name{
             font-size: 0.8rem;
         }
+        .top-nav,
+        .top-nav .container-fluid {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+           
+        }
+        
     }
     .top-nav{
-        position: fixed;
+        position: sticky;
         width: 100%;
         background-color: white;
         box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
         top: 0;
-     
-        z-index: 1000;
+        z-index: 1001;
+       
     }
+    .landlord-navbar-btn {
+    text-decoration: none !important;
+    color: #198754 !important; /* Bootstrap green */
+    border: none !important;
+    background: none !important;
+    box-shadow: none !important;
+    }
+    
+    /* .row, .container-fluid, .col-9, .col-sm-9, .col-xl-10 {
+        overflow: visible !important;
+        }
+        .dropdown-menu {
+        z-index: 3000 !important;
+    } */ */
+ 
 </style>
 <div class="container-fluid">
     <div class="row" style="height: 100vh;">
@@ -37,7 +61,7 @@
                 <nav class=" navbar border-bottom border-white mb-3 w-100">
 
                             <a class="navbar-brand text-white active" href="{{ route('dashboard') }}">
-                                <a href="{{ route('dashboard') }}" class="ms-2"><img class="img-fluid " style=" width:50%; height:auto;" src="{{ asset('images/rumsika.svg') }}" alt="logo"></a>
+                                <a href="{{ route('dashboard') }}" class="ms-2"><img class="img-fluid " style=" width:70%; height:auto;" src="{{ asset('images/rumsika.svg') }}" alt="logo"></a>
 
                             </a>
 
@@ -75,13 +99,20 @@
             </div>
 
         </div>
-        <div class="col-9 col-sm-9  col-xl-10 px-md-0 ">
+        <div class="col-10 col-sm-9  col-xl-10 px-md-0 ">
             <nav class="navbar top-nav navbar-expand-lg  bg-body-tertiary  ">
-                <div class="container-fluid d-flex align-items-center text-success row">
-                    <h5 class="l_name col"><i>Welcome back,</i> {{session('landlord_name')}}</h5>
+                <div class="container-fluid d-flex align-items-center text-success ">
+                    <h5 class="l_name mb-0"><i>Welcome back,</i></h5>
 
-                    <div class="dropdown col " style="padding-left: 34%;">
-                            <span class=" dropdown-toggle fs-5 " id="landlordDropdown" type="button"  data-bs-toggle="dropdown" aria-expanded="false">{{session('landlord_name')}}</span>
+                    <div class="dropdown  " style="margin-right: 2rem !important;">
+                       <button class="dropdown-toggle d-flex align-items-center btn btn-link landlord-navbar-btn" id="landlordDropdown"  data-bs-toggle="dropdown" aria-expanded="false">
+                            @if(!empty($landlord->profile_picture))
+                                <img src="{{ asset('storage/' . $landlord->profile_picture) }}" alt="Profile Picture" class="rounded-circle me-2" width="32" height="32" style="object-fit:cover;">
+                            @else
+                                <img src="{{ asset('images/profile avator.jpg') }}" alt="Profile Picture" class="rounded-circle me-2" width="32" height="32" style="object-fit:cover;">
+                            @endif
+                            {{ session('landlord_name') }}
+                        </button>
                             <ul class="dropdown-menu " aria-labelledby="landlordDropdown">
                                 <li class="dropdown-item ">
                                     <a class="bi bi-person-circle nav-link" href="{{ route('dashboard', ['section' => 'profile']) }}"> My Profile</a>
@@ -93,17 +124,18 @@
                     </div>
                 </div>
             </nav>
+   
             <br>
             <div class="px-md-4 px-lg-5 py-3 main-content">
                 <!-- stats cards -->
                 @if(request('section', 'dashboard')== 'dashboard')
                 <br><br>
                     <div class="row mb-4">
-                        <div class=" col-4 col-md-4 col-lg-3">
+                        <div class=" col-6 col-md-4 col-lg-3">
                             <div class="card text-black bg-warning mb-3 h-100">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
-                                        <i class="bi bi-house-door fs-1 me-2"></i>
+                                        <i class="bi bi-house-door fs-1 me-1"></i>
                                         <div>
                                             <p class="card-title mb-0">My Houses</p>
                                             <h2 class="card-text">{{ $housesCount }}</h2>
@@ -112,11 +144,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class=" col-4 col-md-4 col-lg-3 ">
+                        <div class=" col-6 col-md-4 col-lg-3 ">
                             <div class="card text-black bg-warning mb-3 h-100">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
-                                        <i class="bi bi-question-circle fs-1 me-2"></i>
+                                        <i class="bi bi-question-circle fs-1 me-1"></i>
                                         <div>
                                             <p class="card-title mb-0">Enquiries</p>
                                             <h2 class="card-text">{{$enquiriesCount }}</h2>
@@ -124,12 +156,12 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class=" col-4 col-md-4 col-lg-3 ">
+                        </div><br>
+                        <div class=" col-6 col-md-4 col-lg-3 ">
                             <div class="card text-black bg-warning mb-3 h-100">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
-                                        <i class="bi bi-eye fs-1 me-2"></i>
+                                        <i class="bi bi-eye fs-1 me-1"></i>
                                         <div>
                                             <p class="card-title mb-0">Views</p>
                                             <h2 class="card-text">{{$viewsCount }}</h2>
@@ -144,13 +176,13 @@
                         <div class="card mb-4 col-md-5 ms-2">
                             <div class="card-body">
                                 <h5 class="card-title">Enquiries This Year</h5>
-                                <canvas id="enquiriesChart" height="100" ></canvas>
+                                <canvas id="enquiriesChart" height="200" ></canvas>
                             </div>
                         </div>
                         <div class="card mb-4 col-md-5 ms-2">
                             <div class="card-body">
                                 <h5 class="card-title">Total Views This Year</h5>
-                                <canvas id="viewsChart" height="100" ></canvas>
+                                <canvas id="viewsChart" height="200" ></canvas>
                             </div>
                         </div>
                     </div>
@@ -277,19 +309,20 @@
                                         @endif
                                     </td>
                                     <td>
+                                        <!-- actions button -->
                                         <div class="dropdown">
                                             <button class="btn btn-sm btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i class="bi bi-three-dots-vertical fs-6"></i>
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <li>
-                                                    <a class="dropdown-item" href="">
+                                                    <button class="dropdown-item" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#viewHouseModal{{ $house->id }}">
                                                         <i class="bi bi-eye"></i> View
-                                                    </a>
+                                                    </button>
                                                 </li>
 
                                                 <li>
-                                                    <!-- Edit triggers the modal for this house -->
+                                                  
                                                     <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editHouseModal{{ $house->id }}">
                                                         <i class="bi bi-pencil"></i> Edit
                                                     </button>
@@ -304,6 +337,59 @@
                                                     </form>
                                                 </li>
                                             </ul>
+                                        </div>
+                                        <!-- view house modal -->
+                                        <div class="modal fade" id="viewHouseModal{{ $house->id }}" tabindex="-1" aria-labelledby="viewHouseModalLabel{{ $house->id }}" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-lg modal-sm-mobile">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="viewHouseModalLabel{{ $house->id }}">House Details</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p><strong>Type:</strong> {{ $house->Type }}</p>
+                                                        <p><strong>Location:</strong> {{ $house->Location }}</p>
+                                                        <p><strong>Description:</strong><br>
+                                                            @php
+                                                                $points = preg_split('/\r\n|\r|\n/', $house->Description ?? '');
+                                                            @endphp
+                                                            <ul>
+                                                                @foreach($points as $point)
+                                                                    @if(trim($point) !== '')
+                                                                        <li>{{ $point }}</li>
+                                                                    @endif
+                                                                @endforeach
+                                                            </ul>
+                                                        </p>
+                                                        <p><strong>Rate:</strong> {{ $house->Rate }}</p>
+                                                        <p><strong>Views:</strong> {{ $HviewsCount[$house->id] ?? 0 }}</p>
+                                                        <div>
+                                                            @if($house->image)
+                                                                <img src="{{ asset('storage/' . $house->image) }}" alt="House Image" width="120" class="me-2 mb-2">
+                                                            @endif
+                                                            @if($house->image_inside)
+                                                                <img src="{{ asset('storage/' . $house->image_inside) }}" alt="Inside" width="120" class="me-2 mb-2">
+                                                            @endif
+                                                            @if($house->Image_outside)
+                                                                <img src="{{ asset('storage/' . $house->Image_outside) }}" alt="Outside" width="120" class="me-2 mb-2">
+                                                            @endif
+                                                            @if($house->Amenities)
+                                                                <img src="{{ asset('storage/' . $house->Amenities) }}" alt="Amenities" width="120" class="me-2 mb-2">
+                                                            @endif
+                                                        </div>
+                                                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editHouseModal{{ $house->id }}">
+                                                             <i class="bi bi-pencil"></i> Edit
+                                                        </button>
+                                                        <form method="POST" action="" class="d-inline">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="button" class="btn btn-danger " data-bs-toggle="modal" data-bs-target="#deleteHouseModal{{ $house->id }}">
+                                                                <i class="bi bi-trash"></i> Delete
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <!-- Edit House Modal -->
                                          <div class="modal fade" id="editHouseModal{{ $house->id }}" tabindex="-1" aria-labelledby="editHouseModalLabel{{ $house->id }}" aria-hidden="true">
@@ -414,10 +500,21 @@
                 <!-- Profile section -->
                 @if(request('section')== 'profile')
                     <br><h3>Your Profile</h3><br><br>
-
+                @if(session('success'))
+                    <div class="alert alert-success">{{ session('success') }}</div>
+                @endif
                     <form class="mb-4 col-10" id="profileForm" method="POST" action="">
                       @csrf
+                      
                       <div class="row">
+                        <div class="col-6 mb-4 text-center">
+                            @if(!empty($landlord->profile_picture))
+                                <img src="{{ asset('storage/' . $landlord->profile_picture) }}" alt="Profile Picture" class="rounded-circle" width="120" height="120" style="object-fit:cover;">
+                            @else
+                                <img src="{{ asset('images/profile avator.jpg') }}" alt="Profile Picture" class="rounded-circle" width="120" height="120" style="object-fit:cover;">
+                            @endif
+                        </div>
+                                        
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Name</label>
                             <input type="text" class="form-control" value="{{ $landlord->name ?? '' }}" readonly>
@@ -439,14 +536,27 @@
                 <!-- Edit Profile Modal -->
                 <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
-                    <form method="POST" action="{{route('landlord.updateProfile', $landlord->id)}}" id="editProfileForm">
+                    <form method="POST" action="{{route('landlord.updateProfile', $landlord->id)}}" id="editProfileForm" enctype="multipart/form-data">
                     @csrf
+                                    
                     <div class="modal-content">
                         <div class="modal-header">
                         <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
+                        <div class="mb-4 text-center position-relative" style="width: 130px; margin: 0 auto;">
+                            @if(!empty($landlord->profile_picture))
+                                <img id="profilePicPreview" src="{{ asset('storage/' . $landlord->profile_picture) }}" alt="Profile Picture" class="rounded-circle" width="120" height="120" style="object-fit:cover;">
+                            @else
+                                <img id="profilePicPreview" src="{{ asset('images/profile avator.jpg') }}" alt="Profile Picture" class="rounded-circle" width="120" height="120" style="object-fit:cover;">
+                            @endif
+                            <label for="profilePicInput" class="position-absolute bottom-0 end-0 bg-white rounded-circle p-1 shadow" style="cursor:pointer;">
+                                <i class="bi bi-pencil text-primary"></i>
+                                <input type="file" id="profilePicInput" name="profile_picture" accept="image/*" class="d-none">
+                            </label>
+                        </div>
+
                         <div class="mb-3">
                             <label class="form-label">Name</label>
                             <input type="text" class="form-control" name="name" value="{{ $landlord->name ?? '' }}">
@@ -471,8 +581,20 @@
                 <!-- password change -->
                 @if(request('section')== 'password')
                     <br><h3>Change Password</h3><br><br>
-                    <form method="POST" action="" class="mb-4 col-8 col-10">
+                    <form method="POST" action="{{ route('landlord.changePassword') }}" class="mb-4 col-8 col-10">
                         @csrf
+                        @if(session('success'))
+                            <div class="alert alert-success">{{ session('success') }}</div>
+                        @endif
+                        @if($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <div class="form-outline col-md-6 mb-4 position-relative">
                             <label for="currentpwd">Current Password</label>
                             <input type="password" name="current" class="form-control" id="currentpwd" placeholder="Enter Current Password"><br>
@@ -492,12 +614,12 @@
 
                         <div class="form-outline col-md-6 mb-4 position-relative">
                             <label for="confirmnew">Confirm password</label>
-                            <input type="password" name="confirmnew" class="form-control" id="confirmpwd" placeholder="Confirm new password">
+                            <input type="password" name="new_confirmation" class="form-control" id="confirmpwd" placeholder="Confirm new password">
                             <span class="position-absolute top-50 end-0 translate-middle-y mt-2 me-3" style="cursor:pointer; height: 100%; display: flex; align-items: center;" onclick="togglePassword()">
                                 <i class="bi bi-eye fs-3" id="togglePasswordIcon"></i>
                             </span>
                         </div>
-                        <a href="" class="btn btn-success">Change Password</a>
+                        <button type="submit" class="btn btn-success">Change Password</button>
                     </form>
                 @endif
             </div>
@@ -509,8 +631,32 @@
 </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-
+      
         document.addEventListener('DOMContentLoaded', function () {
+            // Handle profile picture preview
+            document.querySelectorAll('#profilePicInput').forEach(function(input) {
+                input.addEventListener('change', function(event) {
+                    const [file] = event.target.files;
+                    if (file) {
+                        // Find the closest preview image in the same modal/form
+                        const preview = event.target.closest('div.position-relative').querySelector('#profilePicPreview');
+                        if (preview) {
+                            preview.src = URL.createObjectURL(file);
+                        }
+                    }
+                });
+            });
+            // Fade out alerts after 3 seconds
+            setTimeout(function() {
+                document.querySelectorAll('.alert-success, .alert-danger, .alert-warning').forEach(function(alert) {
+                    alert.classList.add('fade');
+                    alert.style.transition = 'opacity 0.5s';
+                    alert.style.opacity = '0';
+                    setTimeout(function() {
+                        alert.remove();
+                    }, 500); // Remove from DOM after fade
+                });
+            }, 3000);
             // Initialize the enquiries chart
             var ctx = document.getElementById('enquiriesChart').getContext('2d');
             var enquiriesData = @json($enquiriesData);

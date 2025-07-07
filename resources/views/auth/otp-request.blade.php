@@ -2,9 +2,16 @@
 
 @section('content')
 <style>
-    .otp-request-container {
-        min-height: 80vh;
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    .otp-request-bg {
+        min-height: 100vh;
+        width: 100vw;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         background: linear-gradient(135deg, #e0ffe0 0%, #f8f9fa 100%);
@@ -27,12 +34,19 @@
         width: 90%;
         font-weight: 600;
     }
+    .otp-logo {
+        width: 25%;
+        height: auto;
+        display: block;
+        margin: 0 auto 1.5rem auto;
+        min-width: 120px;
+        max-width: 180px;
+    }
 </style>
 
-<div class="otp-request-container">
-    <img class="img-fluid" style=" width:25%; height:auto;" src="{{ asset('images/rumsika.svg') }}" alt="logo"> 
-
-    <div class="otp-card">
+<div class="otp-request-bg">
+    <img class="img-fluid otp-logo" src="{{ asset('images/rumsika.svg') }}" alt="logo">
+    <div class="otp-card mt-2">
         <h3 class="text-center">Request OTP</h3>
         @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>

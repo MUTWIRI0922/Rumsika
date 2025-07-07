@@ -35,7 +35,7 @@
           @media (max-width: 768px) {
               .card {
                   max-width: 80vw;
-                  max-height: 100vw;
+                 
                   margin-left: auto;
                   margin-right: auto;
               }
@@ -74,7 +74,7 @@
               <div class="alert alert-success">{{ session('success') }}</div>
           @endif
           <!-- login form -->
-          <div class="card h-100 " id="login" style="border-radius: 1rem; border-color:gold; border-width:3px;">
+          <div class="card" id="login" style="border-radius: 1rem; border-color:gold; border-width:3px;">
              
             <div class="card-body  " style="background-color: green;border-radius: 1rem;">
               <form method="POST" action="{{ route('landlord.login') }}">

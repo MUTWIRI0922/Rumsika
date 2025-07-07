@@ -69,6 +69,11 @@
     border-radius: 4px;
     margin-bottom: 10px;
     }
+        .card.house-card .btn {
+    width: 100%;
+    font-size: 0.8rem;
+    padding: 0.3rem 0;
+    }
     .row-3 {
         display: flex;
         justify-content: space-between;
@@ -79,11 +84,40 @@
             width: 100%;
             height: 300px;
         }
+        .card.house-card {
+        /* min-height: 220px;
+        max-height: 220px; */
+        display: flex;
+        flex-direction: column;
+        justify-content: stretch;
+        }
+        .card.house-card .card-img-top {
+            height: 100px;
+            object-fit: cover;
+        }
+        .card.house-card .card-body {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 0.6rem;
+            min-height: 80px;
+        }
+        .card.house-card .card-title {
+            font-size: 0.7rem;
+        }
+        .card.house-card .card-text {
+            font-size: 0.6rem;
+        }
+        .card.house-card .btn {
+            width: 100%;
+            margin-top: auto;
+        }
     }
     
 </style>
- <div class="row row-1 ms-3 mt-5">
-    <br><br>
+ <div class="row row-1 mx-1 mt-5">
+    <br>
      @if(isset($select_house))
     <div class="col-md-5 main-image-col d-flex justify-content-center">
         <img id="mainhouseimage" src="{{ asset('storage/' . $select_house->image)}}" alt=" house image">
@@ -149,7 +183,7 @@
          @forelse($houses as $house)
             <div class="col-6 col-sm-6 col-lg-3 mb-4 d-flex">
                 <div class="card house-card flex-fill">
-                                    <img src="{{ asset('storage/' . $house->image)}}" class="card-img-top" style="max-width:px;" alt="House Image">
+                                    <img src="{{ asset('storage/' . $house->image)}}" class="card-img-top"  alt="House Image">
                                     <div class="card-body">
                                         <h5 class="card-title">{{ $house->Type ?? 'N/A' }}</h5>
                                         <p class="card-text align-text-center">

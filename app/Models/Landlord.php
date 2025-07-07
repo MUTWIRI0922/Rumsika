@@ -13,5 +13,6 @@ class Landlord extends Model
         'email',
         'phone',
         'password',
+        'profile_picture',
     ];
 }
