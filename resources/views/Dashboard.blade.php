@@ -530,9 +530,38 @@
                       </div>
 
                         <button type="button" class="btn btn-primary" id="editBtn" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit Profile</button>
+                        <button type="button" class="btn btn-primary" id="kycVerifyBtn" data-bs-toggle="modal" data-bs-target="#kycVerifyModal">KYC Verify</button>
                         <button type="submit" class="btn btn-success d-none" id="saveBtn">Save</button>
                     </form>
                 @endif
+                <!-- KYC Verification Modal -->
+                <div class="modal fade" id="kycVerifyModal" tabindex="-1" aria-labelledby="kycVerifyModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <form method="POST" action="" id="kycVerifyForm">
+                            @csrf
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="kycVerifyModalLabel">KYC Verification</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                        <label for="id_photo">Upload ID Document:</label>
+                                        <input type="file" name="id_photo" required><br><br>
+                                        <label>Capture Selfie:</label><br>
+                                        <video id="video" width="300" autoplay></video><br>
+                                        <button type="button" onclick="takeSnapshot()">Capture Selfie</button><br>
+                                        <!-- <canvas id="canvas" width="300" height="200" style="display:none;"></canvas> -->
+                                        <input type="hidden" name="selfie_data" id="selfie_data">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-success">Verify</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
                 <!-- Edit Profile Modal -->
                 <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -629,10 +658,12 @@
         </div>
     </div>
 </div>
+    @vite('resources/js/selfie.js')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-      
+     
         document.addEventListener('DOMContentLoaded', function () {
+          
             // Handle profile picture preview
             document.querySelectorAll('#profilePicInput').forEach(function(input) {
                 input.addEventListener('change', function(event) {

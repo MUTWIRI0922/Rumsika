@@ -65,3 +65,6 @@ Route::post('/house-upload', [housedetailscontroller::class, 'upload'])->name('h
 
 Route::put('/houses/{id}', [\App\Http\Controllers\housecontroller::class, 'update'])->name('house.update');
 Route::delete('/houses/{id}', [\App\Http\Controllers\housecontroller::class, 'delete'])->name('house.delete');
+
+// admin dashboard routes
+Route::get('/admin', function() { return view('Admin.Admin'); })->name('admin.dashboard');
