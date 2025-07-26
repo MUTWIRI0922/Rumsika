@@ -25,9 +25,15 @@
             padding-right: 0 !important;
             margin-left: 0 !important;
             margin-right: 0 !important;
-           
+
         }
-        
+        .modal-body #preview,#video
+        {
+            width: 100% !important;
+            height: 150px !important;
+        }
+
+
     }
     .top-nav{
         position: sticky;
@@ -36,7 +42,7 @@
         box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
         top: 0;
         z-index: 1001;
-       
+
     }
     .landlord-navbar-btn {
     text-decoration: none !important;
@@ -45,14 +51,14 @@
     background: none !important;
     box-shadow: none !important;
     }
-    
+
     /* .row, .container-fluid, .col-9, .col-sm-9, .col-xl-10 {
         overflow: visible !important;
         }
         .dropdown-menu {
         z-index: 3000 !important;
     } */ */
- 
+
 </style>
 <div class="container-fluid">
     <div class="row" style="height: 100vh;">
@@ -124,7 +130,7 @@
                     </div>
                 </div>
             </nav>
-   
+
             <br>
             <div class="px-md-4 px-lg-5 py-3 main-content">
                 <!-- stats cards -->
@@ -228,6 +234,10 @@
                                             <input type="number" name="rate" class="form-control" required>
                                         </div>
                                         <div class="mb-3">
+                                            <label class="form-label">No. of available units<span class="text-danger">*</span></label>
+                                            <input type="number" name="available_units" class="form-control" required>
+                                        </div>
+                                        <div class="mb-3">
                                             <label class="form-label">House Image<span class="text-danger">*</span></label>
                                             <input type="file" name="image" class="form-control" accept="image/*" required>
                                         </div>
@@ -272,6 +282,7 @@
                                 <th>Description</th>
                                 <th>Time</th>
                                 <th>Rate</th>
+                                <th>Available Units</th>
                                 <th>Views</th>
                                 <th>Image</th>
                                 <th>Actions</th> {{-- New column for buttons --}}
@@ -300,6 +311,7 @@
                                         <p>{{ $house->created_at->diffForHumans(null, null, true) ?? 'N/A' }}</p>
                                     </td>
                                     <td>{{ $house->Rate }}</td>
+                                    <td>{{ $house->available_units }}</td>
                                     <td>{{$HviewsCount[$house->id] ?? 0}}</td>
                                     <td>
                                         @if($house->image)
@@ -322,7 +334,7 @@
                                                 </li>
 
                                                 <li>
-                                                  
+
                                                     <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editHouseModal{{ $house->id }}">
                                                         <i class="bi bi-pencil"></i> Edit
                                                     </button>
@@ -420,6 +432,10 @@
                                                                 <label class="form-label">Rate <span class="text-danger">*</span></label>
                                                                 <input type="number" name="rate" class="form-control" value="{{ $house->Rate }}" required>
                                                             </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Number of available units <span class="text-danger">*</span></label>
+                                                                <input type="number" name="available_units" class="form-control" value="{{ $house->available_units }}" required>
+                                                            </div>
                                                             <div class="row">
                                                                 <div class="mb-3 col-md-6">
                                                                 <label class="form-label">Image <span class="text-danger">*</span></label>
@@ -505,7 +521,7 @@
                 @endif
                     <form class="mb-4 col-10" id="profileForm" method="POST" action="">
                       @csrf
-                      
+
                       <div class="row">
                         <div class="col-6 mb-4 text-center">
                             @if(!empty($landlord->profile_picture))
@@ -514,7 +530,7 @@
                                 <img src="{{ asset('images/profile avator.jpg') }}" alt="Profile Picture" class="rounded-circle" width="120" height="120" style="object-fit:cover;">
                             @endif
                         </div>
-                                        
+
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Name</label>
                             <input type="text" class="form-control" value="{{ $landlord->name ?? '' }}" readonly>
@@ -547,14 +563,19 @@
                                 <div class="modal-body">
                                         <label for="id_photo">Upload ID Document:</label>
                                         <input type="file" name="id_photo" required><br><br>
-                                        <label>Capture Selfie:</label><br>
-                                        <video id="video" width="300" autoplay></video><br>
-                                        <button type="button" onclick="takeSnapshot()">Capture Selfie</button><br>
-                                        <!-- <canvas id="canvas" width="300" height="200" style="display:none;"></canvas> -->
+
+                                        <!-- Live feed & working canvas (canvas stays hidden) -->
+                                        <video id="video" width="250px" autoplay playsinline style="display:none;"></video>
+                                        <canvas id="canvas" width="300" height="200" style="display:none;"></canvas>
+                                        <!-- CAPTURE BUTTON -->
+                                        <br><br>
+                                        <button type="button" class="btn btn-danger" id="captureBtn"> Capture Selfie</button><br><br>
+                                        <!-- Hidden base64 + user preview -->
                                         <input type="hidden" name="selfie_data" id="selfie_data">
+                                        <img id="preview" style="width: 250px; display:none; border:1px solid #ccc;" />
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" id="cancelBtn" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                     <button type="submit" class="btn btn-success">Verify</button>
                                 </div>
                             </div>
@@ -567,7 +588,7 @@
                 <div class="modal-dialog">
                     <form method="POST" action="{{route('landlord.updateProfile', $landlord->id)}}" id="editProfileForm" enctype="multipart/form-data">
                     @csrf
-                                    
+
                     <div class="modal-content">
                         <div class="modal-header">
                         <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
@@ -661,9 +682,9 @@
     @vite('resources/js/selfie.js')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-     
+
         document.addEventListener('DOMContentLoaded', function () {
-          
+
             // Handle profile picture preview
             document.querySelectorAll('#profilePicInput').forEach(function(input) {
                 input.addEventListener('change', function(event) {

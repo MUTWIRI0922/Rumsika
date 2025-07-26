@@ -1,62 +1,91 @@
-   // Function to take a snapshot from the video stream
-         // Access the webcam
-        const video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
-        const hidden = document.getElementById('selfie_data');
-        const preview = document.getElementById('preview');
-        const select = document.getElementById('cameraSelect');
-        let currentStream;
+document.addEventListener('DOMContentLoaded', () => {
+    const video      = document.getElementById('video');
+    const canvas     = document.getElementById('canvas');
+    const preview    = document.getElementById('preview');
+    const hidden     = document.getElementById('selfie_data');
+    const captureBtn = document.getElementById('captureBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
 
-        async function listCameras() {
-            const devices = await navigator.mediaDevices.enumerateDevices();
-            const cameras = devices.filter(d => d.kind === 'videoinput');
+    let currentStream = null;
+    let isCapturing = false;
 
-            select.innerHTML = '';
+    async function getPreferredCameraId() {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const cameras = devices.filter(d => d.kind === 'videoinput');
 
-            cameras.forEach(cam => {
-                const option = document.createElement('option');
-                option.value = cam.deviceId;
-                option.text = cam.label || `Camera ${select.length + 1}`;
-                select.appendChild(option);
-            });
-        }
+        // Prioritize integrated camera by checking its label
+        for (let cam of cameras) {
+            const label = cam.label.toLowerCase();
+            const isIntegrated =
+                label.includes("integrated") ||
+                label.includes("built-in") ||
+                label.includes("hd webcam") ||
+                label.includes("facetime") ||
+                label.includes("laptop");
 
-        async function startStream(deviceId) {
-            if (currentStream) {
-                currentStream.getTracks().forEach(track => track.stop());
+            const isNotVirtual = !label.includes("eos") && !label.includes("virtual");
+
+            if (isIntegrated && isNotVirtual) {
+                return cam.deviceId;
             }
-
-            const constraints = {
-                video: { deviceId: { exact: deviceId } }
-            };
-
-            currentStream = await navigator.mediaDevices.getUserMedia(constraints);
-            video.srcObject = currentStream;
         }
 
-        select.addEventListener('change', () => {
-            startStream(select.value);
+        // Fallback to the first available camera
+        return cameras.length ? cameras[0].deviceId : null;
+    }
+
+    async function startCamera() {
+        if (currentStream) currentStream.getTracks().forEach(t => t.stop());
+
+        const deviceId = await getPreferredCameraId();
+
+        if (!deviceId) {
+            alert("No camera available.");
+            return;
+        }
+
+        currentStream = await navigator.mediaDevices.getUserMedia({
+            video: { deviceId: { exact: deviceId } }
         });
 
-        window.takeSnapshot = function () {
-            console.log("Button clicked!");
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            const imageData = canvas.toDataURL('image/png');
-            hidden.value = imageData;
+        video.srcObject = currentStream;
+        video.style.display = 'block';
+    }
 
-            preview.src = imageData;
-            preview.style.display = 'block';
-            canvas.style.display = 'block';
-        };
+    function takePhoto() {
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const dataUrl = canvas.toDataURL('image/png');
 
-        // Run on load
-        (async () => {
-            await listCameras();
-            if (select.options.length > 0) {
-                await startStream(select.value);
-            } else {
-                alert("No camera found.");
-            }
-        })();
- 
+        hidden.value = dataUrl;
+        preview.src = dataUrl;
+        preview.style.display = 'block';
+
+        if (currentStream) currentStream.getTracks().forEach(t => t.stop());
+        video.style.display = 'none';
+
+        captureBtn.textContent = 'Capture Selfie';
+        isCapturing = false;
+    }
+
+    captureBtn.addEventListener('click', async () => {
+        if (!isCapturing) {
+            await startCamera();
+            captureBtn.textContent = 'Take Photo';
+            isCapturing = true;
+        } else {
+            takePhoto();
+        }
+    });
+        cancelBtn.addEventListener('click', () => {
+        if (currentStream) {
+            currentStream.getTracks().forEach(track => track.stop());
+        }
+
+        video.style.display = 'none';
+        preview.style.display = 'none';
+        captureBtn.textContent = 'Capture Selfie';
+        isCapturing = false;
+        cancelBtn.style.display = 'none';
+    });
+});

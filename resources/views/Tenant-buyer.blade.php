@@ -80,6 +80,9 @@
     .filters label{
         display: none; /* Hide labels on small screens */
     }
+    .post-date {
+        font-size: 0.6rem;
+    }
 }
 </style>
 
@@ -130,13 +133,14 @@
                             in {{ $house->Location ?? 'N/A' }}
                             For {{ $house->Rate ?? 'N/A' }}/month
                         </p>
-                        <div class="row">
-                                            <div class="col">
-                                                <p>Posted: <b>{{ $house->created_at->diffForHumans(null, null, true) ?? 'N/A' }}</b></p>
+                        <div class="row me-0">
+                                             <!--Date Posted-->
+                                            <div class="">
+                                                <p class="post-date">Posted: <b>{{ $house->created_at->diffForHumans(null, null, true) ?? 'N/A' }}</b></p>
                                             </div>
-                                            <div class="col">
+                                            <!-- <div class="col">
                                                 <i class="bi bi-eye">{{$viewsCount[$house->id] ?? 0}}</i>
-                                            </div>
+                                            </div> -->
                         </div>
 
                         <form action="{{ route('house.view.record', ['id' => $house->id]) }}" method="POST" style="display: inline;">
