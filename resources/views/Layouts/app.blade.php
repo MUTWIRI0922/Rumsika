@@ -8,6 +8,14 @@
     <!-- Add this in your layouts/app.blade.php head section -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon (1).ico') }}">    @vite(['resources/sass/app.scss','resources/js/app.js'])
+    <script type="application/ld+json">
+        {
+        "@context" : "https://schema.org",
+        "@type" : "WebSite",
+        "name" : "Rumsika",
+        "url" : "https://www.rumsika.twitech.co.ke"
+        }
+    </script>
      <style>
         body {
             font-family: 'Roboto', sans-serif;
