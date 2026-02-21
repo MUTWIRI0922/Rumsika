@@ -679,7 +679,7 @@
         </div>
     </div>
 </div>
-    @vite('resources/js/selfie.js')
+    <script src="../js/selfie.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
 
