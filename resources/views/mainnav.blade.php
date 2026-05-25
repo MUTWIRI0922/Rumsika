@@ -33,14 +33,14 @@
 <div class="nav pb-4">
     <nav>
         <div class="navbar navbar-light bg-light d-flex flex-row align-items-center justify-content-between flex-nowrap">
-            <a href="{{ url('') }}" class="ms-2 me-2">
+            <a href="{{ url('/') }}" class="ms-2 me-2">
                 <img class="img-fluid" src="{{ asset('images/rumsika.svg') }}" alt="logo">
             </a>
             <form action="javascript:void(0);" class="d-flex align-items-center mx-2" style="width:40vw; min-width:90px;">
                 <input type="text" id="searchInput" class="form-control me-2" placeholder="search">
                 <button type="submit" class="btn btn-success">Search</button>
             </form>
-            <a href="{{ url('Landlord-login') }}" class="ms-2 me-2" style="text-decoration:none; white-space:nowrap;">Lease/sell</a>
+            <a href="{{ route('landlord.login') }}" class="ms-2 me-2" style="text-decoration:none; white-space:nowrap;">Lease/sell</a>
         </div>
     </nav>
 </div>
