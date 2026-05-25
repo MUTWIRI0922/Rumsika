@@ -1,7 +1,7 @@
 @extends ('layouts.app')
 @section('title', 'Rumsika')
 @section('content')
-  <style>
+    <style>
     
        html, body, .container {
            margin: 0;
@@ -95,10 +95,10 @@
         <p class="mt-0">Rumsika connects you directly to your potential Landlord or tenant,<br> from wherever you are across the Kenyan territory.</p>
         <div class=" justify-content-center mt-3">
           <div class="mb-2 ">
-            <a class="btn btn-warning " href="{{ url('Tenant-buyer') }}">Find a house</a>
+            <a class="btn btn-warning " href="{{ route('tenant.buyer') }}">Find a house</a>
           </div>
           <div class=" mb-2  ">
-            <a class="btn btn-warning " href="{{ url('Landlord-login') }}">Lease a house</a>
+            <a class="btn btn-warning " href="{{ route('landlord.loginpage') }}">Lease a house</a>
           </div>
         </div>
      </div>

@@ -15,4 +15,8 @@ class Landlord extends Model
         'password',
         'profile_picture',
     ];
+    public function reviews()
+    {
+        return $this->hasMany(Reviews::class, 'lister_id')->latest();
+    }
 }

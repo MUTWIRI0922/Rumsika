@@ -15,9 +15,11 @@ class housedetailscontroller extends Controller
     public function show($id)
     {
             try {
-        $select_house = \App\Models\housedetails::findOrFail($id);
-    //
-        $select_house = \App\Models\housedetails::with('landlord')->findOrFail($id);
+            // Load the house and eager-load its landlord, including the landlord's
+            // reviews average (rating) and reviews count.
+            $select_house = \App\Models\housedetails::with(['landlord' => function($q) {
+                                $q->withAvg('reviews', 'rating')->withCount('reviews');
+                            }])->findOrFail($id);
         $houses = \App\Models\housedetails::all();
         // display the views for this house
         $viewsCount = Houseviews::selectRaw('house_id, COUNT(*) as view_count')
@@ -34,7 +36,7 @@ class housedetailscontroller extends Controller
     {
         // Logic to retrieve and display house details
         try{
-                    $houses = \App\Models\housedetails::all(); // Fetch all house details from the model
+            $houses = \App\Models\housedetails::all(); // Fetch all house details from the model
         return view('House-view', compact('houses')); // Return the view with the house details
         } catch (ModelNotFoundException $e) {
             // Redirect back with an error message

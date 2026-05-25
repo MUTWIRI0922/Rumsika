@@ -126,7 +126,18 @@
         <!-- Showing details of the selected house -->
 
               <h1>{{ $select_house->Type ?? 'House Name' }}</h1>
-              <p>Posted: <b>{{ $select_house->created_at->diffForHumans() ?? 'N/A' }}</b></p>
+              <div class="row">
+                <div class="col"><p>Posted: <b>{{ $select_house->created_at->diffForHumans() ?? 'N/A' }}</b></p></div>
+                <div class="col"><p>Lister rating:
+                        @php $avg = round($select_house->landlord->reviews_avg_rating ?? 0); @endphp
+                        @for ($i = 1; $i <= 5; $i++)
+                            @if ($i <= $avg)
+                                <i class="bi bi-star-fill text-warning"></i>
+                            @else
+                                <i class="bi bi-star text-warning"></i>
+                            @endif
+                        @endfor</p></div>
+              </div>
               @php
                     $maskedPhone = substr($select_house->landlord->phone, 0, 4) . '***' . substr($select_house->landlord->phone, -3);
               @endphp
@@ -148,13 +159,17 @@
             <p>Rate: <b>{{ $select_house->Rate ?? 'N/A' }}</b>/Month</p>
             <p>Location: <b>{{ $select_house->Location ?? 'N/A' }}</b></p></p>
             <!-- <p>Type: <b>{{ $select_house->Type ?? 'N/A' }}</b></p> -->
-            <form id="enquiryForm" method="POST"  action="{{ route('enquiries.store') }}" style="display:inline;">
-                @csrf
-                <input type="hidden" name="house_id" value="{{ $select_house->id }}">
-                <button type="submit" class="btn btn-warning" id="contactSellerBtn">
-                    Contact Seller
-                </button>
-            </form>
+            <div>
+                <form id="enquiryForm" method="POST"  action="{{ route('enquiries.store') }}" style="display:inline;">
+                    @csrf
+                    <input type="hidden" name="house_id" value="{{ $select_house->id }}">
+                    <button type="submit" class="btn btn-sm btn-warning" id="contactSellerBtn">
+                        Contact Seller
+                    </button>
+                </form>
+                <a href="{{route('listerprofile',$select_house->landlord->id )}}" class="btn btn-sm btn-success">Lister Profile</a>
+            </div>
+
             <div class="row row-3">
                 @if($select_house->image_inside)
                     <div class="col"><img src="{{ asset('storage/' . $select_house->image_inside) }}" alt="Image 1"

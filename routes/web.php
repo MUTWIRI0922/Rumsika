@@ -6,6 +6,7 @@ use App\Http\Controllers\Dashboardcontroller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EnquiryController;
 use App\Http\Controllers\housecontroller;
+use App\Http\Controllers\ReviewsController;
 use App\Http\Controllers\HouseviewsController;
 /*
 |--------------------------------------------------------------------------
@@ -22,28 +23,38 @@ Route::get('/', function () {
     return view('Rumsika');
 });
 
-Route::get('/Tenant-buyer', [housedetailscontroller::class, 'allHouses'])->name('tenant.buyer');
+Route::get('/tenant-buyer', [housedetailscontroller::class, 'allHouses'])->name('tenant.buyer');
 // Route::get('/Tenant', [housedetailscontroller::class, 'filterHouse']);
 /* Route::get('/House-view', function(){
     return view('House-view'); 
 });*/
-Route::get('/Landlord-login', function(){
+Route::get('/landlordlogin', function(){
     return view('Landlord-login');
-});
-Route::get('/Landlord-logout', [RegistrationController::class, 'logout'])->name('landlord.logout');
-Route::post('/Landlord-login', [RegistrationController::class, 'login'])->name('landlord.login');
-Route::get('/House-view', function(){
+})->name('landlord.loginpage');
+Route::get('/landlordlogout', [RegistrationController::class, 'logout'])->name('landlord.logout');
+Route::post('/landlordlogin', [RegistrationController::class, 'login'])->name('landlord.login');
+Route::get('/houseview', function(){
     return  redirect('/Tenant-buyer')->with('error', 'Please select a house to view details.');
 });
-Route::post('/House-view/{id}', [HouseviewsController::class, 'record'])->name('house.view.record');
-Route::get('/House-view/{id}', [housedetailscontroller::class, 'show'])->name('house.show');
+Route::post('/houseview/{id}', [HouseviewsController::class, 'record'])->name('house.view.record');
+Route::get('/houseview/{id}', [housedetailscontroller::class, 'show'])->name('house.show');
+Route::get('/house/listerprofile/{id}',[RegistrationController::class, 'lister_profile'])->name('listerprofile');
+Route::resource('/lister/reviews', ReviewsController::class)->names([
+    'create' => 'reviews.create',
+    'store' => 'reviews.store',
+    'index' => 'reviews.index',
+    'show' => 'reviews.show',
+    'update' => 'reviews.update',
+    'edit' => 'reviews.edit',
+    'destroy' => 'reviews.destroy'
+]);
 // Show the registration form
-Route::get('/Landlord-register', function() {
+Route::get('/landlordregister', function() {
     return view('Landlord-register');
 })->name('landlord.register.form');
 
 
-Route::post('/Landlord-register', [RegistrationController::class, 'register'])->name('landlord.register');
+Route::post('/landlordregister', [RegistrationController::class, 'register'])->name('landlord.register');
 Route::post('updateProfile', [RegistrationController::class, 'updateProfile'])->name('landlord.updateProfile');
 Route::post('/landlord/change-password', [RegistrationController::class, 'changePassword'])->name('landlord.changePassword');
 Route::post('/otp/send', [RegistrationController::class, 'sendOtp'])->name('otp.send');
@@ -56,7 +67,7 @@ Route::get('/password-reset', function() {
     return view('auth.password-reset');
 })->name('password.reset.form');
 Route::middleware(['landlord.auth'])->group(function () {
-    Route::get('/Dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     // ...other protected routes
 });
 

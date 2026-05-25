@@ -177,4 +177,19 @@ class RegistrationController extends Controller
 
         return back()->with('success', 'Password changed successfully!');
     }
+    //display profile to prospective tenants
+    public function lister_profile(Request $request, $id)
+    {
+        try{
+            $lister = Landlord::with('reviews')
+                      ->withCount('reviews')
+                      ->withAvg('reviews', 'rating')
+                      ->findOrFail($id);
+            return view('lister-profile', compact('lister'));
+        }catch(\Exception $e){
+            return redirect()->back()->with('error', 'We could not fetch lister data');
+        }
+
+
+    }
 }
