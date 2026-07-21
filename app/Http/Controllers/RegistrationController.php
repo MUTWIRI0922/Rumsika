@@ -45,7 +45,7 @@ class RegistrationController extends Controller
             // Store landlord info in session
             session(['landlord_id' => $landlord->id, 'landlord_name' => $landlord->name]);
 
-            return redirect('/Dashboard'); // Change to your intended page
+            return redirect()->route('dashboard'); // Change to your intended page
         } else {
             return back()->withErrors(['email' => 'Invalid credentials.'])->withInput();
         }
@@ -132,7 +132,7 @@ class RegistrationController extends Controller
         // Optionally clear OTP session
         // session()->forget(['otp', 'otp_expires_at']);
 
-        return redirect('/Landlord-login')->with('success', 'Password reset successful! You can now log in.');
+        return redirect()-> route('landlord.loginpage')->with('success', 'Password reset successful! You can now log in.');
     }
     //profile update function
     public function updateProfile(Request $request)

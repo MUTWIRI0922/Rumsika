@@ -78,4 +78,4 @@ Route::put('/houses/{id}', [\App\Http\Controllers\housecontroller::class, 'updat
 Route::delete('/houses/{id}', [\App\Http\Controllers\housecontroller::class, 'delete'])->name('house.delete');
 
 // admin dashboard routes
-Route::get('/admin', function() { return view('Admin.Admin'); })->name('admin.dashboard');
+Route::get('/admin', function() { return view('Admin.Dashboard'); })->name('admin.dashboard');
