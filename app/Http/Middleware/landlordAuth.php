@@ -16,7 +16,7 @@ class landlordAuth
     public function handle(Request $request, Closure $next): Response
     {
          if (!session()->has('landlord_id')) {
-        return redirect('/Landlord-login')->with('error', 'Please login first.');
+        return redirect()->route('landlord.loginpage')->with('error', 'Please login first.');
         }
         return $next($request);
     }

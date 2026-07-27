@@ -100,6 +100,11 @@
                                 <i class="bi bi-key-fill"></i> <span class="d-none d-sm-inline ms-2">Change password</span>
                             </a>
                         </li>
+                         <li class="nav-item w-100 mb-2">
+                            <a class="nav-link text-white {{ request('section') == 'password' ? 'bg-warning' : '' }}" href="{{ route('dashboard', ['section' => 'password']) }}">
+                                <i class="bi bi-question-circle"></i> <span class="d-none d-sm-inline ms-2">Support</span>
+                            </a>
+                        </li>                        
                     </ul>
                 </nav>
             </div>

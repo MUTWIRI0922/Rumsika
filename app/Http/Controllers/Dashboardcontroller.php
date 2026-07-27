@@ -58,6 +58,6 @@ class Dashboardcontroller extends Controller
             $viewsData[] = $viewsPerMonth[$m] ?? 0;
         }
         //views capture
-        return view('Dashboard', compact('housesCount', 'enquiriesCount','viewsCount','HviewsCount', 'landlord','houses', 'enquiriesData', 'viewsData'));
+        return view('Landlord.dashboard', compact('housesCount', 'enquiriesCount','viewsCount','HviewsCount', 'landlord','houses', 'enquiriesData', 'viewsData'));
     }
 }

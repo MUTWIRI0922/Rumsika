@@ -31,7 +31,16 @@ class RegistrationController extends Controller
             'phone'    => $request->phone,
             'password' => bcrypt($request->password),
         ]);
-
+        //send welcome email
+        Mail::raw("Welcome to Rumsika! Your registration was successful.", function ($message) use ($request) {
+            $message->to($request->email)
+                ->subject('Welcome to Rumsika');
+        });
+        //notify admin of new registration
+        Mail::raw("A new landlord has registered: {$request->name}, Email: {$request->email}, Phone: {$request->phone}", function ($message) {
+            $message->to('admin@example.com')
+                ->subject('New Landlord Registration');
+        });
         return redirect()->back()->with('success', 'Registration successful!');
     }
     //login function
@@ -54,7 +63,7 @@ class RegistrationController extends Controller
     public function logout(Request $request)
     {
         $request->session()->flush();
-        return redirect('/Landlord-login');
+        return redirect()->route('landlord.loginpage')->with('success', 'Logged out successfully.');
     }
     //otp-sending function
     public function sendOtp(Request $request)
@@ -132,7 +141,7 @@ class RegistrationController extends Controller
         // Optionally clear OTP session
         // session()->forget(['otp', 'otp_expires_at']);
 
-        return redirect()-> route('landlord.loginpage')->with('success', 'Password reset successful! You can now log in.');
+        return redirect()->route('landlord.loginform')->with('success', 'Password reset successful! You can now log in.');
     }
     //profile update function
     public function updateProfile(Request $request)

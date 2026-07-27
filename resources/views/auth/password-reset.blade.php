@@ -1,6 +1,14 @@
 @extends('layouts.app')
 @section('content')
 <style>
+        body {
+        margin: 0;
+        font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+        background:
+            linear-gradient(135deg, rgba(3, 27, 16, 0.86), rgba(9, 82, 47, 0.78)),
+            url('{{ asset('images/exterior-design-shutterstock_1932966368-1200x700-compressed.jpg') }}') center/cover no-repeat;
+        min-height: 100vh;
+    }
     .otp-logo {
         width: 25%;
         height: auto;

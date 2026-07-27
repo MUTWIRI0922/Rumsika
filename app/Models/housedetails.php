@@ -20,6 +20,8 @@ class housedetails extends Model
         'image_inside',
         'Image_outside',
         'Amenities',
+        'status',
+        'available_units',
     ];
     public $timestamps = true;
     /**

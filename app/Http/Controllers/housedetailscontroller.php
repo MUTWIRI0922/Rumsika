@@ -31,7 +31,7 @@ class housedetailscontroller extends Controller
         // Redirect back with an error message
         return redirect('/House-view')->with('error', 'House not found!');
         }
-     }
+    }
     public function viewHouse()
     {
         // Logic to retrieve and display house details
@@ -69,6 +69,7 @@ class housedetailscontroller extends Controller
             'location' => 'required|string|max:255',
             'description' => 'required|string',
             'rate' => 'required|numeric',
+            'available_units' => 'required|integer|min:0',
             'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'image_inside' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'Image_outside' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -80,6 +81,7 @@ class housedetailscontroller extends Controller
         'Location' => $request->location,
         'Description' => $request->description,
         'Rate' => $request->rate,
+        'available_units' => $request->available_units,
         'landlord_id' => session('landlord_id'),
         ];
         // Handle image upload

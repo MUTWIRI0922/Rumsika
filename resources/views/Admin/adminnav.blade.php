@@ -11,11 +11,11 @@
             <i class="bi bi-speedometer2 me-2"></i>
             <span>Dashboard</span>
         </a>
-        <a href="#" class="nav-link d-flex align-items-center">
+        <a href="{{ route('admin.kyc.requests') }}" class="nav-link d-flex align-items-center">
             <i class="bi bi-person-badge me-2"></i>
             <span>KYC Requests</span>
         </a>
-        <a href="#" class="nav-link d-flex align-items-center">
+        <a href="{{ route('admin.users') }}" class="nav-link d-flex align-items-center">
             <i class="bi bi-people-fill me-2"></i>
             <span>Users</span>
         </a>
@@ -39,9 +39,12 @@
             <i class="bi bi-question-circle me-2"></i>
             <span>Support</span>
         </a>
-        <a href="#" class="nav-link d-flex align-items-center text-dark px-2 py-2 rounded">
-            <i class="bi bi-box-arrow-right me-2"></i>
-            <span>Logout</span>
-        </a>
+        <form action="{{ route('admin.logout') }}" method="POST" class="d-inline">
+            @csrf
+            <button type="submit" class="nav-link d-flex align-items-center text-dark px-2 py-2 rounded border-0 bg-transparent w-100 text-start">
+                <i class="bi bi-box-arrow-right me-2"></i>
+                <span>Logout</span>
+            </button>
+        </form>
     </div>
 </aside>

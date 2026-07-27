@@ -1,7 +1,7 @@
 
 @extends('layouts.admin')
 
-@section('title', 'Admin Dashboard')
+@section('title', 'Admin Dashboard - Rumsika')
 
 @section('content')
 <div class="container py-5">
@@ -12,14 +12,11 @@
         </div>
         <div class="text-md-end">
             <p class="text-muted mb-1">Today: {{ \Carbon\Carbon::now()->format('F j, Y') }}</p>
-            <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-success btn-sm">
-                <i class="bi bi-house-door-fill me-1"></i> Admin Home
-            </a>
         </div>
     </div>
 
-    <div class="row g-3 mb-4">
-        <div class="col-md-3">
+    <div class="row mb-4">
+        <div class="col-6 col-md-3 mb-3 mb-md-0">
             <div class="card shadow-sm border-success h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
@@ -29,14 +26,14 @@
                             </span>
                         </div>
                         <div>
-                            <small class="text-muted text-uppercase">Pending KYC</small>
-                            <h3 class="mb-0">18</h3>
+                            <small class="text-muted text-uppercase">Total Users</small>
+                            <h3 class="mb-0">{{ $totalUsers }}</h3>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-6 col-md-3 mb-3 mb-md-0">
             <div class="card shadow-sm border-primary h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
@@ -47,13 +44,13 @@
                         </div>
                         <div>
                             <small class="text-muted text-uppercase">Daily Views</small>
-                            <h3 class="mb-0">320</h3>
+                            <h3 class="mb-0">{{ $dailyViews }}</h3>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-6 col-md-3 mb-3 mb-md-0">
             <div class="card shadow-sm border-warning h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
@@ -64,13 +61,13 @@
                         </div>
                         <div>
                             <small class="text-muted text-uppercase">New Enquiries</small>
-                            <h3 class="mb-0">12</h3>
+                            <h3 class="mb-0">{{ $totalEnquiries }}</h3>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-6 col-md-3 mb-3 mb-md-0">
             <div class="card shadow-sm border-secondary h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
@@ -80,18 +77,18 @@
                             </span>
                         </div>
                         <div>
-                            <small class="text-muted text-uppercase">System Health</small>
-                            <h3 class="mb-0">Stable</h3>
+                            <small class="text-muted text-uppercase">Total Listings</small>
+                            <h3 class="mb-0">{{ $totalListings }}</h3>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-xl-8">
+    <div class="row g-3">
+        <div class="col-12 col-md-8">
             <div class="card shadow-sm my-2">
-                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <div class="card-header bg-white d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3">
                     <div>
                         <h5 class="mb-1">Recent Signups</h5>
                         <p class="text-muted mb-0">Review the latest user registrations</p>
@@ -99,53 +96,35 @@
                     <span class="badge bg-success">New</span>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
+                    <table class="table table-hover table-sm align-middle mb-0">
                         <thead class="table-light">
                             <tr>
                                 <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>KYC Status</th>
-                                <th>KYC score</th>
+                                <th class="d-none d-sm-table-cell">Email</th>
+                                <th class="d-none d-sm-table-cell">Phone</th>
+                                <th class="d-none d-sm-table-cell">Signup date</th>
+                                <th>Status</th>
                                 <th class="text-end">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($kycRequests ?? [] as $request)
+                            @forelse($recentUsers as $recentUser)
                                 <tr>
-                                    <td>{{ $request->user_name ?? 'Unknown User' }}</td>
-                                    <td>{{ $request->id_photo ? 'Uploaded' : 'Missing' }}</td>
-                                    <td>{{ $request->selfie ? 'Uploaded' : 'Missing' }}</td>
-                                    <td>{{ $request->score ?? '—' }}</td>
+                                    <td>{{ Str::title($recentUser->name ?? 'Unknown User') }}</td>
+                                    <td class="d-none d-sm-table-cell">{{ $recentUser->email ?? '—' }}</td>
+                                    <td class="d-none d-sm-table-cell">{{ $recentUser->phone ?? '—' }}</td>
+                                    <td class="d-none d-sm-table-cell">{{ $recentUser->created_at ? $recentUser->created_at->format('Y-m-d') : '—' }}</td>
                                     <td>
-                                        <span class="badge bg-{{ $request->status == 'approved' ? 'success' : ($request->status == 'rejected' ? 'danger' : 'secondary') }}">
-                                            {{ ucfirst($request->status ?? 'pending') }}
+                                        <span class="badge bg-{{ $recentUser->status == 'active' ? 'success' : ($recentUser->status == 'suspended' ? 'danger' : 'secondary') }}">
+                                            {{ ucfirst($recentUser->status ?? 'pending') }}
                                         </span>
                                     </td>
                                     <td class="text-end">
-                                        <form method="POST" action="{{ $request->action_url ?? '#' }}" class="d-inline-flex gap-2">
-                                            @csrf
-                                            @if(isset($request->id))
-                                                @method('PUT')
-                                            @endif
-                                            <button name="action" value="approve" class="btn btn-secondary btn-sm">View Details</button>
-                                        </form>
+                                        <a href="{{ route('admin.user.details', $recentUser->id) }}" class="btn btn-sm btn-secondary">View Details</a>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td>Jane Doe</td>
-                                    <td>Janedoe@gmail.com</td>
-                                    <td>0796635581</td>
-                                    <td>Initiated</td>
-                                    <td>91</td>
-                                    <td class="text-end">
-                                        <form method="POST" action="#" class="d-inline-flex gap-2">
-                                            @csrf
-                                            @method('PUT')
-                                            <button name="action" value="view" class="btn btn-secondary btn-sm">View Details</button>
-                                        </form>
-                                    </td>
                                 </tr>
 
                             @endforelse
@@ -153,11 +132,11 @@
                     </table>
                 </div>
                 <div class="card-footer bg-white text-end">
-                    <a href="#" class="text-decoration-none text-success">View all<i class="bi bi-arrow-right-short"></i></a>
+                    <a href="{{ route('admin.users') }}" class="text-decoration-none text-success">View all<i class="bi bi-arrow-right-short"></i></a>
                 </div>
             </div>
             <div class="card shadow-sm my-2">
-                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <div class="card-header bg-white d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3">
                     <div>
                         <h5 class="mb-1">Pending KYC Requests</h5>
                         <p class="text-muted mb-0">Review the latest verification submissions and approve or reject requests.</p>
@@ -165,12 +144,12 @@
                     <span class="badge bg-warning text-dark">Needs attention</span>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
+                    <table class="table table-hover table-sm align-middle mb-0">
                         <thead class="table-light">
                             <tr>
                                 <th>User</th>
-                                <th>ID Photo</th>
-                                <th>Selfie</th>
+                                <th class="d-none d-sm-table-cell">ID Photo</th>
+                                <th class="d-none d-sm-table-cell">Selfie</th>
                                 <th>Score</th>
                                 <th>Status</th>
                                 <th class="text-end">Action</th>
@@ -180,8 +159,8 @@
                             @forelse($kycRequests ?? [] as $request)
                                 <tr>
                                     <td>{{ $request->user_name ?? 'Unknown User' }}</td>
-                                    <td>{{ $request->id_photo ? 'Uploaded' : 'Missing' }}</td>
-                                    <td>{{ $request->selfie ? 'Uploaded' : 'Missing' }}</td>
+                                    <td class="d-none d-sm-table-cell">{{ $request->id_photo ? 'Uploaded' : 'Missing' }}</td>
+                                    <td class="d-none d-sm-table-cell">{{ $request->selfie ? 'Uploaded' : 'Missing' }}</td>
                                     <td>{{ $request->score ?? '—' }}</td>
                                     <td>
                                         <span class="badge bg-{{ $request->status == 'approved' ? 'success' : ($request->status == 'rejected' ? 'danger' : 'secondary') }}">
@@ -189,7 +168,7 @@
                                         </span>
                                     </td>
                                     <td class="text-end">
-                                        <form method="POST" action="{{ $request->action_url ?? '#' }}" class="d-inline-flex gap-2">
+                                        <form method="POST" action="{{ $request->action_url ?? '#' }}" class="d-flex flex-column flex-sm-row gap-2 justify-content-end">
                                             @csrf
                                             @if(isset($request->id))
                                                 @method('PUT')
@@ -202,36 +181,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td>Jane Doe</td>
-                                    <td>Uploaded</td>
-                                    <td>Uploaded</td>
-                                    <td>91</td>
-                                    <td><span class="badge bg-warning text-dark">Pending</span></td>
-                                    <td class="text-end">
-                                        <form method="POST" action="#" class="d-inline-flex gap-2">
-                                            @csrf
-                                            @method('PUT')
-                                            <button name="action" value="view" class="btn btn-secondary btn-sm">View Details</button>
-                                            <button name="action" value="approve" class="btn btn-success btn-sm">Approve</button>
-                                            <button name="action" value="reject" class="btn btn-danger btn-sm">Reject</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Michael Carter</td>
-                                    <td>Uploaded</td>
-                                    <td>Uploaded</td>
-                                    <td>87</td>
-                                    <td><span class="badge bg-warning text-dark">Pending</span></td>
-                                    <td class="text-end">
-                                        <form method="POST" action="#" class="d-inline-flex gap-2">
-                                            @csrf
-                                            @method('PUT')
-                                            <button name="action" value="view" class="btn btn-secondary btn-sm">View Details</button>
-                                            <button name="action" value="approve" class="btn btn-success btn-sm">Approve</button>
-                                            <button name="action" value="reject" class="btn btn-danger btn-sm">Reject</button>
-                                        </form>
-                                    </td>
+                                    <td colspan="6" class="text-center text-muted">Coming soon.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -240,9 +190,9 @@
                 <div class="card-footer bg-white text-end">
                     <a href="#" class="text-decoration-none text-success">View all requests <i class="bi bi-arrow-right-short"></i></a>
                 </div>
-            </div>
+            </div> 
         </div>
-        <div class="col-xl-4">
+        <div class="col-12 col-md-4 ">
             <div class="card shadow-sm mb-4">
                 <div class="card-header bg-white">
                     <h5 class="mb-0">Quick Actions</h5>
@@ -256,7 +206,7 @@
                         Export reports
                         <i class="bi bi-chevron-right"></i>
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    <a href="{{ route('admin.users') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                         Manage users
                         <i class="bi bi-chevron-right"></i>
                     </a>

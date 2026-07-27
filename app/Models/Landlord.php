@@ -14,6 +14,7 @@ class Landlord extends Model
         'phone',
         'password',
         'profile_picture',
+        'status',
     ];
     public function reviews()
     {
