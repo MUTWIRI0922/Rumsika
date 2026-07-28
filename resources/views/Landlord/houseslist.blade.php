@@ -3,7 +3,7 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h3 class="mb-1">Your Houses</h3>
+        <h3 class="mb-1">My Houses</h3>
         <p class="text-muted mb-0">Manage your listings and monitor activity from one place.</p>
     </div>
 </div>
@@ -78,19 +78,18 @@
                         </button>
                         <ul class="dropdown-menu">
                             <li>
-                                <button class="dropdown-item" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#viewHouseModal{{ $house->id }}">
+                                <a class="dropdown-item" href="{{ route('landlord.house.details', $house->id) }}">
                                     <i class="bi bi-eye"></i> View
-                                </button>
+                                </a>
                             </li>
 
                             <li>
-
-                                <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editHouseModal{{ $house->id }}">
-                                    <i class="bi bi-pencil"></i> Edit
-                                </button>
+                                <a class="dropdown-item" href="{{ route('dashboard.edit-house', $house->id) }}">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </a>
                             </li>
                             <li>
-                                <form method="POST" action="" class="d-inline">
+                                <form method="POST" action="{{ route('house.delete', $house->id) }}" class="d-inline">
                                     @csrf
                                     @method('DELETE')
                                     <button type="button" class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#deleteHouseModal{{ $house->id }}">
@@ -109,7 +108,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    Are you sure you want to delete this house?
+                                    This action is irreversible. Are you sure you want to delete this house?
                                 </div>
                                 <div class="modal-footer">
                                     <form method="POST" action="{{ route('house.delete', $house->id) }}">

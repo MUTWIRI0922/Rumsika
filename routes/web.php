@@ -78,12 +78,22 @@ Route::middleware(['landlord.auth'])->group(function () {
     Route::get('/landlord/add-house', function() {
         return view('Landlord.houseupload');
     })->name('dashboard.add-house');
+    Route::get('/landlord/houses', [DashboardController::class, 'landlordHouses'])->name('landlord.houses');
     Route::post('/house-upload', [housedetailscontroller::class, 'upload'])->name('house.upload');
-    // Route::get('/house-upload', function(){return view ('Dashboard', ['section' => 'add-house']);});
-    Route::post('updateProfile', [RegistrationController::class, 'updateProfile'])->name('landlord.updateProfile');
+    Route::get('/landlord/houses/{id}', [DashboardController::class, 'showHouseDetails'])->name('landlord.house.details');
+    Route::get('/landlord/houses/{id}/edit', [DashboardController::class, 'edit'])->name('dashboard.edit-house');
+    Route::get('/landlord/profile', [RegistrationController::class, 'showProfile'])->name('landlord.profile');
+    Route::get('/landlord/profile/edit', [RegistrationController::class, 'editProfile'])->name('landlord.editProfile');
+    Route::post('/landlord/updateProfile', [RegistrationController::class, 'updateProfile'])->name('landlord.updateProfile');
+    Route::get('/landlord/change-password', function() {
+        return view('Landlord.passwordchange');
+    })->name('landlord.passwordchange');
     Route::post('/landlord/change-password', [RegistrationController::class, 'changePassword'])->name('landlord.changePassword');
-    Route::put('/houses/{id}', [\App\Http\Controllers\housecontroller::class, 'update'])->name('house.update');
-    Route::delete('/houses/{id}', [\App\Http\Controllers\housecontroller::class, 'delete'])->name('house.delete');
+    Route::put('/houses/{id}', [\App\Http\Controllers\DashboardController::class, 'houseupdate'])->name('house.update');
+    Route::delete('/houses/{id}', [\App\Http\Controllers\DashboardController::class, 'housedelete'])->name('house.delete');
+    Route::get('/landlord/support', function() {
+        return view('Landlord.support');
+    })->name('landlord.support');
 });
 
 

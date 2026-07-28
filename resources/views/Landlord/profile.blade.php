@@ -38,9 +38,9 @@
         </div>
     </div>
 
-    <button type="button" class="btn btn-primary" id="editBtn" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit Profile</button>
-    <button type="button" class="btn btn-primary" id="kycVerifyBtn" data-bs-toggle="modal" data-bs-target="#kycVerifyModal">KYC Verify</button>
-    <button type="submit" class="btn btn-success d-none" id="saveBtn">Save</button>
+    <a href="{{ route('landlord.editProfile') }}" class="btn btn-secondary btn-sm">Edit Profile</a>
+    <button disabled type="button" class="btn btn-warning btn-sm" id="kycVerifyBtn" data-bs-toggle="modal" data-bs-target="#kycVerifyModal">KYC Verify</button>
+
 </form>
 <script>
     document.getElementById('editBtn').onclick = function() {

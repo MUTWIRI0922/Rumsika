@@ -53,6 +53,21 @@
             z-index: 1040;
         }
 
+        .landlord-sidebar-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+            z-index: 1050;
+        }
+
+        .landlord-sidebar-backdrop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
         .landlord-main-panel {
             flex: 1;
             min-width: 0;
@@ -75,25 +90,25 @@
             flex: 1;
         }
 
-        .landlord-page-card {
+        .landlord-page {
             background: #ffffff;
             border: 1px solid #e7ecef;
             border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+
             padding: 1.5rem;
         }
 
-        .landlord-page-card .table {
+        .landlord-page .table {
             margin-bottom: 0;
         }
 
-        .landlord-page-card .form-control,
-        .landlord-page-card .form-select {
+        .landlord-page .form-control,
+        .landlord-page .form-select {
             border-radius: 10px;
             border-color: #d6dde3;
         }
 
-        .landlord-page-card .btn {
+        .landlord-page .btn {
             border-radius: 999px;
             padding-inline: 1rem;
         }
@@ -111,29 +126,35 @@
             }
 
             .landlord-sidebar {
-                width: 100%;
+                width: 85%;
+                max-width: 280px;
                 flex-basis: auto;
-                min-height: auto;
-                position: sticky;
+                min-height: 100vh;
+                height: 100vh;
+                position: fixed;
                 top: 0;
-                overflow-x: auto;
-                padding: 0.75rem 1rem;
+                left: 0;
+                transform: translateX(-100%);
+                transition: transform 0.25s ease-in-out;
+                overflow-y: auto;
+                padding: 1rem;
+                z-index: 1060;
+            }
+
+            .landlord-sidebar.open {
+                transform: translateX(0);
             }
 
             .landlord-sidebar .nav {
-                flex-direction: row;
-                flex-wrap: nowrap;
-                overflow-x: auto;
-                white-space: nowrap;
+                flex-direction: column;
                 gap: 0.5rem;
             }
 
             .landlord-sidebar .nav-link {
                 border-radius: 999px !important;
-                padding: 0.6rem 0.8rem;
-                display: inline-flex;
+                padding: 0.7rem 0.9rem;
+                display: flex;
                 align-items: center;
-                flex-shrink: 0;
             }
 
             .landlord-content {
@@ -145,36 +166,43 @@
 
 <body>
     <div id="app" class="landlord-layout">
+        <div id="sidebarBackdrop" class="landlord-sidebar-backdrop"></div>
         @include('landlord.sidebar')
 
         <div class="landlord-main-panel">
             <nav class="navbar top-nav landlord-topbar navbar-expand-lg">
                 <div class="container-fluid d-flex align-items-center justify-content-between">
-                    <h5 class="l_name mb-0 text-success"><i>Welcome back,</i></h5>
-
-                    <div class="dropdown">
-                        <button class="dropdown-toggle d-flex align-items-center btn btn-link landlord-navbar-btn" id="landlordDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            @if(!empty($landlord->profile_picture))
-                            <img src="{{ asset('storage/' . $landlord->profile_picture) }}" alt="Profile Picture" class="rounded-circle me-2" width="32" height="32" style="object-fit:cover;">
-                            @else
-                            <img src="{{ asset('images/profile avator.jpg') }}" alt="Profile Picture" class="rounded-circle me-2" width="32" height="32" style="object-fit:cover;">
-                            @endif
-                            {{ session('landlord_name') }}
+                    <div class="d-flex align-items-center d-md-none">
+                        <button class="btn btn-outline-success d-sm-none me-2" type="button" id="sidebarToggleMobile" aria-label="Toggle menu">
+                            <i class="bi bi-list"></i>
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="landlordDropdown">
-                            <li>
-                                <a class="dropdown-item bi bi-person-circle" href="{{ route('dashboard', ['section' => 'profile']) }}"> My Profile</a>
-                            </li>
-                            <li>
-                                <a href="{{ route('landlord.logout') }}" class="dropdown-item bi bi-arrow-bar-right"> Logout</a>
-                            </li>
-                        </ul>
+                    </div>
+
+                    <div class="ms-auto">
+
+                    @php
+                        $profilePicture = session('profile_picture');
+                        $profileImageUrl = asset('images/profile avator.jpg');
+
+                        if (!empty($profilePicture)) {
+                            $profileImagePath = public_path('storage/' . $profilePicture);
+                            if (file_exists($profileImagePath)) {
+                                $profileImageUrl = asset('storage/' . $profilePicture);
+                            }
+                        }
+                    @endphp
+
+                    <div class="dropdown ms-auto">
+                        <a class="d-flex align-items-center btn btn-link landlord-navbar-btn" href="{{ route('landlord.profile') }}">
+                            <img src="{{ $profileImageUrl }}" alt="Profile Picture" class="rounded-circle me-2" width="32" height="32" style="object-fit:cover;">
+                            {{ Str::title(session('landlord_name')) }}
+                        </a>
                     </div>
                 </div>
             </nav>
 
             <main class="landlord-content">
-                <div class="landlord-page-card">
+                <div class="landlord-page">
                     @yield('content')
                 </div>
             </main>
@@ -189,7 +217,8 @@
     <button onclick="topFunction()" id="backToTopBtn" title="Go to top" style="display:none;position:fixed;bottom:20px;right:0px;z-index:9999;" class="btn btn-success w-10 h-10 rounded-circle shadow">
         <i class="bi bi-arrow-up"></i>
     </button>
-
+    <script src="../js/selfie.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         // Hide the loader overlay when the page is fully loaded
         window.addEventListener('load', function() {
@@ -210,6 +239,38 @@
             document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
         }
         document.addEventListener('DOMContentLoaded', function() {
+            const sidebarToggleMobile = document.getElementById('sidebarToggleMobile');
+            const landlordSidebar = document.getElementById('landlordSidebar');
+            const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+            const closeSidebarMobile = document.getElementById('closeSidebarMobile');
+
+            const toggleSidebar = function() {
+                landlordSidebar?.classList.toggle('open');
+                sidebarBackdrop?.classList.toggle('show');
+            };
+
+            sidebarToggleMobile?.addEventListener('click', toggleSidebar);
+            closeSidebarMobile?.addEventListener('click', toggleSidebar);
+            sidebarBackdrop?.addEventListener('click', toggleSidebar);
+
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    landlordSidebar?.classList.remove('open');
+                    sidebarBackdrop?.classList.remove('show');
+                }
+            });
+
+            const editBtn = document.getElementById('editBtn');
+            if (editBtn) {
+                editBtn.onclick = function() {
+                    let form = document.getElementById('profileForm');
+                    form?.querySelectorAll('input').forEach(input => input.removeAttribute('readonly'));
+                    const saveBtn = document.getElementById('saveBtn');
+                    saveBtn?.classList.remove('d-none');
+                    this.classList.add('d-none');
+                };
+            }
+
             // Fade out alerts after 3 seconds
             setTimeout(function() {
                 document.querySelectorAll('.alert-success, .alert-danger, .alert-warning').forEach(function(alert) {

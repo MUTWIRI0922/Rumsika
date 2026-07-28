@@ -52,7 +52,7 @@ class RegistrationController extends Controller
 
         if ($landlord && Hash::check($credentials['password'], $landlord->password)) {
             // Store landlord info in session
-            session(['landlord_id' => $landlord->id, 'landlord_name' => $landlord->name]);
+            session(['landlord_id' => $landlord->id, 'landlord_name' => $landlord->name, 'profile_picture' => $landlord->profile_picture]);
 
             return redirect()->route('dashboard'); // Change to your intended page
         } else {
@@ -143,6 +143,18 @@ class RegistrationController extends Controller
 
         return redirect()->route('landlord.loginform')->with('success', 'Password reset successful! You can now log in.');
     }
+    // Show the landlord profile
+    public function showProfile()
+    {
+        $landlord = Landlord::findOrFail(session('landlord_id'));
+        return view('Landlord.profile', compact('landlord'));
+    }
+    // Show the edit profile form
+    public function editProfile()
+    {
+        $landlord = Landlord::findOrFail(session('landlord_id'));
+        return view('Landlord.editprofile', compact('landlord'));
+    }
     //profile update function
     public function updateProfile(Request $request)
     {
@@ -155,10 +167,13 @@ class RegistrationController extends Controller
             $path                    = $file->store('profile_pictures', 'public');
             $data['profile_picture'] = $path;
         }
+        try {
+            $landlord->update($data);
+            return redirect()->route('landlord.showProfile')->with('success', 'Profile updated successfully!');
 
-        $landlord->update($data);
-
-        return redirect()->route('dashboard', ['section' => 'profile'])->with('success', 'Profile updated successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to update profile. Please try again.');
+        }
     }
     // change password function
     public function changePassword(Request $request)
