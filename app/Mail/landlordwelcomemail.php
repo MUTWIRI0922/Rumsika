@@ -31,7 +31,7 @@ class landlordwelcomemail extends Mailable
     {
         return new Envelope(
             subject: 'Welcome to Rumsika',
-            from: 'noreply@rumsika.com'
+            from: 'rumsika@twitech.co.ke'
         );
     }
 

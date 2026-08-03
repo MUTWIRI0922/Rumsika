@@ -30,7 +30,7 @@ class ActivationMail extends Mailable implements ShouldQueue
     {
         return new Envelope(
             subject: 'Activation Mail',
-            from: 'noreply@yoursite.com'
+            from: 'rumsika@twitech.co.ke'
         );
     }
 

@@ -33,7 +33,7 @@ class newregistrationmail extends Mailable
     {
         return new Envelope(
             subject: 'New Landlord Registration',
-            from: 'noreply@rumsika.com'
+            from: 'rumsika@twitech.co.ke'
         );
     }
 
