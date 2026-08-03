@@ -127,4 +127,11 @@ Route::middleware(['admin.auth'])->group(function () {
     Route::post('/admin/users/{landlord_id}/listings/{listingId}/bringdown', [\App\Http\Controllers\Admin\Userlistingcontroller::class, 'suspendUserListing'])->name('admin.user.listing.suspend');
     Route::post('/admin/users/{landlord_id}/listings/{listingId}/restore', [\App\Http\Controllers\Admin\Userlistingcontroller::class, 'restoreUserListing'])->name('admin.user.listing.restore');
 
+    // admin password change routes
+    Route::get('/admin/change-password', function() {
+        return view('Admin.settings.password');
+    })->name('admin.passwordchange');
+    route::get('/admin/profile', [Authcontroller::class, 'showProfile'])->name('admin.profile');
+    route::post('/admin/profile/update', [Authcontroller::class, 'updateProfile'])->name('admin.updateProfile');
+    Route::post('/admin/change-password', [Authcontroller::class, 'changePassword'])->name('admin.changePassword');
 });

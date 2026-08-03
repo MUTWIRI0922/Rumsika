@@ -23,10 +23,16 @@
             <i class="bi bi-bar-chart-line-fill me-2"></i>
             <span>Reports</span>
         </a>
-        <a href="#" class="nav-link d-flex align-items-center">
-            <i class="bi bi-gear-fill me-2"></i>
-            <span>Settings</span>
-        </a>
+        <div class="dropdown w-100">
+            <a href="#" class="nav-link d-flex align-items-center justify-content-between dropdown-toggle w-100" data-bs-toggle="dropdown" aria-expanded="false">
+                <span><i class="bi bi-gear-fill me-2"></i>Settings</span>
+            </a>
+            <ul class="dropdown-menu border-0 mt-2 w-100 bg-white">
+                <li><a class="dropdown-item" href="{{ route('admin.profile') }}"><i class="bi bi-person-circle me-2"></i> Profile Settings</a></li>
+                <li><a class="dropdown-item" href="{{ route('admin.passwordchange') }}"><i class="bi bi-key me-2"></i> Change Password</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-bell me-2"></i> Notifications</a></li>
+            </ul>
+        </div>
     </nav>
 
     <div class="mt-auto pt-4 border-top">

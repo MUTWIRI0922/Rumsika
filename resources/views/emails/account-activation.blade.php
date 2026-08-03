@@ -1,3 +1,15 @@
-<p>Hello {{ $user->name }},</p>
-<p>Your account has been activated and is now ready for use.</p>
-<p>Thank you for using our platform.</p>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Account Activation</title>
+</head>
+<body>
+    <h2>Account Activation</h2>
+    <p>Hello, {{ $user->name }}, your account has been activated.</p>
+    <p>Thank you for your patience.</p>
+
+    <p>Regards,</p>
+    <p>Rumsika Team</p>
+</body>
+</html>

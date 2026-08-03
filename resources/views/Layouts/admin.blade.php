@@ -44,7 +44,7 @@
             color: #333;
             border-radius: .5rem;
         }
-
+        .dropdown-item:hover,
         .sidebar .nav-link.active,
         .sidebar .nav-link:hover {
             color: #fff;

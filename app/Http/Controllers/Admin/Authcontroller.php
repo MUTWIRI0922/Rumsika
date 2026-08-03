@@ -34,6 +34,42 @@ class Authcontroller extends Controller
             'email' => 'The provided credentials do not match our records.',
         ]);
     }
+    //admin password change function
+    public function changePassword(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'current_password' => 'required',
+            'new_password' => [
+                'required',
+                'confirmed',
+                'min:8']
+        ],[
+            'email.required' => 'Email is required',
+            'email.email' => 'please ensure email is in the right format',
+            'new_password.confirmed' => 'new password does not match the confirmed password'
+        ]);
+
+    }
+    //admin profile view function
+    public function showProfile()
+    {
+        $admin = User::find(Auth::guard('admin')->id());
+        return view('Admin.settings.profile', compact('admin'));
+    }
+    //admin profile update function
+    public function updateProfile(Request $request)
+    {
+        $admin = User::find(Auth::guard('admin')->id());
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $admin->id,
+        ]);
+
+        $admin->update($validatedData);
+        return redirect()->route('admin.profile')->with('success', 'Profile updated successfully.');
+    }
+
     //logout function
     public function logout(Request $request)
     {

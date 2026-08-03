@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Mail\landlordwelcomemail;
+use App\Mail\newregistrationmail;
 use App\Models\Landlord;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -32,15 +34,9 @@ class RegistrationController extends Controller
             'password' => bcrypt($request->password),
         ]);
         //send welcome email
-        Mail::raw("Welcome to Rumsika! Your registration was successful.", function ($message) use ($request) {
-            $message->to($request->email)
-                ->subject('Welcome to Rumsika');
-        });
+        Mail::to($request->email)->send(new landlordwelcomemail($request->name, $request->email));
         //notify admin of new registration
-        Mail::raw("A new landlord has registered: {$request->name}, Email: {$request->email}, Phone: {$request->phone}", function ($message) {
-            $message->to('admin@example.com')
-                ->subject('New Landlord Registration');
-        });
+        Mail::to('admin@example.com')->send(new newregistrationmail($request->name, $request->email, $request->phone));
         return redirect()->back()->with('success', 'Registration successful!');
     }
     //login function
