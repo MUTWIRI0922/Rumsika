@@ -37,7 +37,7 @@ class RegistrationController extends Controller
         Mail::to($request->email)->send(new landlordwelcomemail($request->name, $request->email));
         //notify admin of new registration
         Mail::to('rumsika@twitech.co.ke')->send(new newregistrationmail($request->name, $request->email, $request->phone));
-        return redirect()->back()->with('success', 'Registration successful!');
+        return redirect()->route('landlord.loginpage')->with('success', 'Registration successful!');
     }
     //login function
     public function login(Request $request)
@@ -137,7 +137,7 @@ class RegistrationController extends Controller
         // Optionally clear OTP session
         // session()->forget(['otp', 'otp_expires_at']);
 
-        return redirect()->route('landlord.loginform')->with('success', 'Password reset successful! You can now log in.');
+        return redirect()->route('landlord.loginpage')->with('success', 'Password reset successful! You can now log in.');
     }
     // Show the landlord profile
     public function showProfile()
