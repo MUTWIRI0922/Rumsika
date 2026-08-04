@@ -112,7 +112,7 @@
                     <button id="sidebarToggleMobile" class="btn btn-success btn-sm">
                         <i class="bi bi-list"></i>
                     </button>
-                    <span class="fw-semibold">Admin panel</span>
+                    <span class="fw-semibold">Admin Panel</span>
                 </div>
             </div>
             @yield('content')
