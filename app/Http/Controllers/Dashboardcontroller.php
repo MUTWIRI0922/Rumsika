@@ -56,7 +56,7 @@ class Dashboardcontroller extends Controller
             $viewsData[] = $viewsPerMonth[$m] ?? 0;
         }
         //views capture
-        return view('Landlord.dashboard', compact('housesCount', 'enquiriesCount','viewsCount','landlord','houses', 'enquiriesData', 'viewsData'));
+        return view('landlord.dashboard', compact('housesCount', 'enquiriesCount','viewsCount','landlord','houses', 'enquiriesData', 'viewsData'));
     }
     public function landlordHouses(Request $request)
     {
@@ -66,7 +66,7 @@ class Dashboardcontroller extends Controller
             ->whereIn('house_id', $houses->pluck('id')) // Filter views by the houses being displayed
             ->groupBy('house_id')
             ->pluck('view_count', 'house_id'); 
-        return view('Landlord.houseslist', compact('houses', 'HviewsCount'));
+        return view('landlord.houseslist', compact('houses', 'HviewsCount'));
     }
     public function showHouseDetails($id)
     {
@@ -77,13 +77,13 @@ class Dashboardcontroller extends Controller
             ->groupBy('house_id')
             ->pluck('view_count', 'house_id');
 
-        return view('Landlord.viewhouse', compact('house', 'HviewsCount'));
+        return view('landlord.viewhouse', compact('house', 'HviewsCount'));
     }
     public function edit($id)
     {
         $landlordId = session('landlord_id');
         $house = \App\Models\housedetails::where('id', $id)->where('landlord_id', $landlordId)->firstOrFail();
-        return view('Landlord.edithouse', compact('house'));
+        return view('landlord.edithouse', compact('house'));
     }
     //update a house in the system
     public function houseupdate(Request $request, $id)

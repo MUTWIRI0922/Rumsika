@@ -17,10 +17,13 @@
         min-width: 120px;
         max-width: 180px;
     }
+    label {
+        color: #fff;
+    }
 </style>
 <div class="container mt-5">
     <img class="img-fluid otp-logo" src="{{ asset('images/rumsika.svg') }}" alt="logo">
-    <h3>Reset Password</h3>
+    <h3 class="text-white">Reset Password</h3>
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
@@ -29,18 +32,18 @@
         @csrf
         <div class="mb-3">
             <label for="email">Email address</label>
-            <input type="email" name="email" class="form-control" 
+            <input type="email" name="email" id="email" class="form-control" 
                    value="{{ session('otp_email') }}" readonly required>
             @error('email') <div class="text-danger">{{ $message }}</div> @enderror
         </div>
         <div class="mb-3">
             <label for="password">New Password</label>
-            <input type="password" name="password" class="form-control" required>
+            <input type="password" name="password" id="password" class="form-control" required>
             @error('password') <div class="text-danger">{{ $message }}</div> @enderror
         </div>
         <div class="mb-3">
             <label for="password_confirmation">Confirm New Password</label>
-            <input type="password" name="password_confirmation" class="form-control" required>
+            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" required>
         </div>
         <button type="submit" class="btn btn-success">Reset Password</button>
     </form>

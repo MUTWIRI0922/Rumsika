@@ -5,7 +5,7 @@
             <form id="suspendForm" method="POST" action="">
                 @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title" id="suspendModalLabel">Suspend User</h5>
+                    <h5 class="modal-title" id="suspendModalLabel">Suspend account </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -29,6 +29,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         const suspendModal = document.getElementById('suspendModal');
         const suspendModalUser = document.getElementById('suspendModalUser');
+        const suspendModalLabel = document.getElementById('suspendModalLabel');
         const suspendForm = document.getElementById('suspendForm');
         const suspendReason = document.getElementById('suspendReason');
         const bsModal = new bootstrap.Modal(suspendModal);
@@ -39,6 +40,7 @@
                 const userName = this.getAttribute('data-user-name');
 
                 suspendModalUser.textContent = `Entering suspension reason for ${userName}.`;
+                suspendModalLabel.textContent = `Suspend ${userName}`;
                 suspendForm.action = `{{ url('/admin/users') }}/${userId}/suspend`;
                 suspendReason.value = '';
                 bsModal.show();

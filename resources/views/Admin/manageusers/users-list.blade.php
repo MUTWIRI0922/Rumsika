@@ -54,7 +54,7 @@
                             type="button"
                             class="btn btn-sm btn-warning suspend-user-btn"
                             data-user-id="{{ $user->id }}"
-                            data-user-name="{{ $user->name }}"
+                            data-user-name="{{ $user->name }}" data-bs-toggle="modal" data-bs-target="#suspendModal"
                         >
                             Suspend account
                         </button>
