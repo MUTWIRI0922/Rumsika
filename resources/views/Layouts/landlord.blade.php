@@ -167,7 +167,7 @@
 <body>
     <div id="app" class="landlord-layout">
         <div id="sidebarBackdrop" class="landlord-sidebar-backdrop"></div>
-        @include('landlord.sidebar')
+        @include('Landlord.sidebar')
 
         <div class="landlord-main-panel">
             <nav class="navbar top-nav landlord-topbar navbar-expand-lg">
