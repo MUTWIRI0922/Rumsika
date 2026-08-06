@@ -8,7 +8,7 @@ use App\Http\Controllers\EnquiryController;
 use App\Http\Controllers\housecontroller;
 use App\Http\Controllers\ReviewsController;
 use App\Http\Controllers\HouseviewsController;
-use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\Dashboardcontroller as AdminDashboardController;
 use App\Http\Controllers\Admin\Authcontroller;
 /*
 |--------------------------------------------------------------------------
