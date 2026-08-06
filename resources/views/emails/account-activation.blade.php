@@ -6,7 +6,7 @@
 </head>
 <body>
     <h2>Account Activation</h2>
-    <p>Hello, {{ $user->name }}, your account has been activated.</p>
+    <p>Hello, {{ $user->name }},Thank you for choosing Rumsika. Your account has been activated.</p>
     <p>Thank you for your patience.</p>
 
     <p>Regards,</p>

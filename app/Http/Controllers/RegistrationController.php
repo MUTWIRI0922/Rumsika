@@ -36,7 +36,7 @@ class RegistrationController extends Controller
         //send welcome email
         Mail::to($request->email)->send(new landlordwelcomemail($request->name, $request->email));
         //notify admin of new registration
-        Mail::to('rumsika@twitech.co.ke')->send(new newregistrationmail($request->name, $request->email, $request->phone));
+        Mail::to('info@twitech.co.ke')->send(new newregistrationmail($request->name, $request->email, $request->phone));
         return redirect()->route('landlord.loginpage')->with('success', 'Registration successful!');
     }
     //login function

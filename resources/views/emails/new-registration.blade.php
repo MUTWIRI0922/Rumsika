@@ -5,7 +5,7 @@
     <title>New Landlord Registration</title>
 </head>
 <body>
-    <h2>New landlord registration</h2>
+    <p>A new landlord has registered on Rumsika.</p>
     <p>Name: {{ $name }}</p>
     <p>Email: {{ $email }}</p>
     <p>Phone: {{ $phone }}</p>
