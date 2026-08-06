@@ -7,7 +7,8 @@
     }
 </style>
 <div class="footer  mt-5">
-    <p class="">Copyright&copy; 2025.All rights reserved. Powered by BlessedArm tech</p>
+    <p class="">Copyright&copy; {{ date('Y') }} Rumsika.All rights reserved</p>
+    <p>Powered by Twitech Solutions</p>
         
 
 </div>
