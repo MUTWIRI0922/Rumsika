@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\housedetails; // Import the housedetails model
-use App\Models\Houseviews; // Import the Houseviews model for tracking views
+use App\Models\houseviews; // Import the Houseviews model for tracking views
 use Illuminate\Database\Eloquent\ModelNotFoundException; // Import ModelNotFoundException for error handling
 
 use function Laravel\Prompts\select;
@@ -22,7 +22,7 @@ class housedetailscontroller extends Controller
                             }])->findOrFail($id);
         $houses = \App\Models\housedetails::all();
         // display the views for this house
-        $viewsCount = Houseviews::selectRaw('house_id, COUNT(*) as view_count')
+        $viewsCount = houseviews::selectRaw('house_id, COUNT(*) as view_count')
             ->whereIn('house_id', $houses->pluck('id')) // Filter views by the houses being displayed
             ->groupBy('house_id')
             ->pluck('view_count', 'house_id');
@@ -49,7 +49,7 @@ class housedetailscontroller extends Controller
         // Logic to retrieve and display house details as filtered for tenants or buyers
         $houses = \App\Models\housedetails::all(); // Fetch all house details from the model
         // Record the view for each house
-        $viewsCount = Houseviews::selectRaw('house_id, COUNT(*) as view_count')
+        $viewsCount = houseviews::selectRaw('house_id, COUNT(*) as view_count')
             ->whereIn('house_id', $houses->pluck('id')) // Filter views by the houses being displayed
             ->groupBy('house_id')
             ->pluck('view_count', 'house_id');

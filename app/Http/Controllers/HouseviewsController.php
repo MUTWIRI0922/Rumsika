@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Houseviews;
+use App\Models\houseviews;
 
 use Illuminate\Http\Request;
 
